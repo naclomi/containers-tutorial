@@ -98,7 +98,9 @@ Notice that when we ran the container, the output started with the message:
 
 `> Executing task: docker run --rm -it  hello-world:latest <`
 
-This is actually displaying the CLI command that we could enter into the terminal to run the container. The docker **run** command takes this form:
+This is actually displaying the CLI command that we could enter into the terminal to run the container. It's really nice that the graphical interface tells us its equivalent CLI commands like this!
+
+The docker **run** command takes this form:
 
 `docker run [flags] [image name]:[image version] `
 
@@ -124,7 +126,7 @@ Now that we've gotten our sea legs, let's try running a container that does some
 
 https://hub.docker.com/r/naclomi/textbook-writer
 
-**EXERCISE: **Use the commands we explored above to pull the image and then run it interactively.
+**EXERCISE: **Use the commands we explored above to pull the image and then run it interactively. If you need reminders of the commands you've previously run, try using the **up and down arrow keys** at the terminal prompt to scroll through your command history.
 
 Once you do so successfully, you should see some scientific-sounding garbage text printed to the console, looking something like this:
 
@@ -132,7 +134,9 @@ Once you do so successfully, you should see some scientific-sounding garbage tex
 
 ##### Exploring the internals
 
-Let's explore the virtual world of the textbook-writer's container. We can open a terminal in the container with the following command:
+Let's next explore the virtual world of the textbook-writer's container, to get a sense of how it works. To do this we will explicitly change the entrypoint of the container from `main.py` (the textbook generation script) to `bash` (the **shell** program that lets us enter terminal commands). This deviates from the default usage pattern designed by author of the container image; we're effectively using a master key to climb into the container as the root user for a look around. The author will probably forgive us our curiosity ;) .
+
+We can open a bash shell inside the container with the following command:
 
 `docker run --rm -it --entrypoint bash naclomi/textbook-writer`
 
