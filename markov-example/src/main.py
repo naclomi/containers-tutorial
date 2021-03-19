@@ -15,7 +15,7 @@ def load_training_data(filename):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--sentences", metavar="N", type=int, default=1,
+    parser.add_argument("--sentences", metavar="N", type=int, default=8,
                         help="how many sentences to output")
     parser.add_argument("--pdf", metavar="FILENAME", type=str,
                         help="output as a pdf file")
