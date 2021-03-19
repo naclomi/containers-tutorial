@@ -456,18 +456,74 @@ docker run --rm naclomi/my-textbook --sentences 1
 
 ##### Taking command-line arguments
 
-TODO
-
-1. learn about alternative command form
-2. learn about cmd command
-3. But PDF still doesn't work?!
-4. Apt install line:
+To get our container to accept command line arguments, we're going to have to make a small change to the way we use the `ENTRYPOINT` command. It turns out, the command has two forms. Here's the one we used:
 
 ```dockerfile
-TODO
+ENTRYPOINT python3 ./src/main.py
 ```
 
-4. Build & run :) 
+This is called **shell form**, because it's how we enter commands in our own terminal shell. Here is the other form:
+
+```dockerfile
+ENTRYPOINT ["python3", "./src/main.py"]
+```
+
+This is called **exec form**. Instead of typing the command out normally, we surround it with square brackets (`[]`) and surround each flag with double-quotes `""`, separating them with commas. Basically, take your shell form, separate the text into words based on the spaces, surround each word with quotes, and put them in `[]`s.
+
+Docker containers will only pass command line arguments to the entrypoint if it is specified in exec form. So let's update our dockerfile:
+
+```dockerfile
+FROM python:3.6-stretch
+
+RUN pip3 install markovify
+
+WORKDIR  /usr/src/textbook-writer
+COPY src ./src
+COPY data ./data
+
+ENTRYPOINT ["python3", "./src/main.py"]
+```
+
+Rebuild and rerun:
+
+![good_number_of_cooks](img/good_number_of_cooks.png)
+
+Muuuuuch better. Our command line flag asking for only one sentence now successfully makes it to the python script.
+
+##### Default arguments
+
+We can actually specify default flags to be passed to the entrypoint, that disappear if the user specifies their own when they run the container. To do that, we use the **CMD** command:
+
+`CMD ["flag1", "flag2", ...]`
+
+At run-time, the `CMD` command will glue whatever flags you specify in its list to the end of the list of flags used by `ENTRYPOINT` unless the user specifies their own command-line flags, in which case it will do nothing. Similar to `ENTRYPOINT`, only the last `CMD` in your Dockerfile will actually take effect. And similar to user-supplied command line flags, `ENTRYPOINT` has to be in exec form for `CMD` to do anything.
+
+So! If we wanted to by default generate 4 sentences of text, unless the user specified otherwise, we could write a Dockerfile like this:
+
+```dockerfile
+FROM python:3.6-stretch
+
+RUN pip3 install markovify
+
+WORKDIR  /usr/src/textbook-writer
+COPY src ./src
+COPY data ./data
+
+ENTRYPOINT ["python3", "./src/main.py"]
+CMD ["--sentences", "4"]
+```
+
+![cmd_ex](img/cmd_ex.png)
+
+Not a necessary feature by any means, but potentially useful.
+
+##### Stretch challenge
+
+If you try generating a PDF as you did in the "Running containers" portion of this tutorial, you'll find that your container still doesn't fully work. It's missing the programs our script uses to save PDF files: ` ghostscript` and `enscript`.
+
+To install them, you'll need to add a command to the right place in your Dockerfile that uses the Linux package manager `apt-get` . See if you can get it working.
+
+*Hint: the first thing you'll have to do is run the command `apt-get update`* 
 
 ## 3. Deploying containers
 
