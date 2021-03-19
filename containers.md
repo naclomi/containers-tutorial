@@ -517,7 +517,11 @@ CMD ["--sentences", "4"]
 
 Not a necessary feature by any means, but potentially useful.
 
-##### Stretch challenge
+**Stretch challenge #1**
+
+Replace the source text that the generator script trains off of with your own content, to create a text generator for something other than a matsci textbook :)
+
+##### Stretch challenge #2
 
 If you try generating a PDF as you did in the "Running containers" portion of this tutorial, you'll find that your container still doesn't fully work. It's missing the programs our script uses to save PDF files: ` ghostscript` and `enscript`.
 
@@ -544,13 +548,9 @@ To install them, you'll need to add a command to the right place in your Dockerf
 
 ## Notes and References
 
-Some content adapted from The Carpentries' [Docker lesson](https://carpentries-incubator.github.io/docker-introduction/), retrieved on Mar 10, 2021
+Some content adapted from The Carpentries' [Docker lesson](https://carpentries-incubator.github.io/docker-introduction/), retrieved on March 10th, 2021
 
-
-
-
-
-
+Markov text generator trained on portions of *Mechanics of Materials*, Wiley ISBN 0-471-59399-0, retrieved from https://ocw.mit.edu/courses/materials-science-and-engineering/3-11-mechanics-of-materials-fall-1999/modules/ on March 5th, 2021
 
 TODO: unused text--
 
