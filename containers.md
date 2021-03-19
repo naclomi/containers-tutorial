@@ -211,56 +211,151 @@ For our textbook writer, we can mount the current directory the terminal is sitt
 
 Then, if we look at the contents of the current directory (2), we'll see that the container saved the pdf to our working directory :D ! Let's open it up!![pdf_yay](img/pdf_yay.png)
 
-Still just as incomprehensible as ever.
+Still just as incomprehensible as ever ;) .
 
-## 2. Making containers
+## 2. Building containers
 
-Ok, so how did all of those files get there?
+Running docker containers in itself is a useful skill and you can do a lot with the pre-existing containers published on Docker Hub, but to fully customize the contents of a container you'll need to build your own images. In this section we'll walk through how.
 
-1. Download the source here:
-   [TODO: zip file]
+##### Building our first image
 
-2. vscode: File -> Open folder
+Images are defined through a **Dockerfile**, a little script that instructs Docker which files to copy into the container and what the entrypoint command is to be executed once the container is eventually run. Once we write our Dockerfile, we'll issue a terminal command that reads it in and actually builds the container image. Once *that's* done, we'll be able to run the container like we did in the previous section.
 
-3. Make a file called Dockerfile
+To get started, create a folder somewhere on your computer called `hello-world`. We'll be storing source code for our container image there. Next, open it in VSCode through the Explorer sidebar tab's "Open Folder" button:
 
-   ```dockerfile
-   FROM python:3.6-stretch
-   LABEL maintainer="YOUR EMAIL ADDRESS HERE"
-   
-   ENTRYPOINT echo Hello World
-   
-   ```
+![open_folder](/home/nacl/UW/mse479/containers/tutorial/img/open_folder.png)
 
-4. Terminal -> New Terminal
+If you already had a folder or project open, you may need to close it by navigating to `File menu -> Close Folder`.
 
-5. `docker build -t [DOCKERHUB-USERNAME]/my-first-container .`
+Once you've opened the `hello-world` folder, create a new file (`File menu -> New File` or `Ctrl+N`) and fill it with the following contents:
 
-6. Docker side-tab -> Images -> find your image here :)
+```dockerfile
+# My first Dockerfile
+FROM python:3.6-stretch
 
-   1. expand directory
-   2. previous versions are kept here
-   3. build again, but now with `[USERNAME]/my-first-container:2.0`, see it appear
+ENTRYPOINT echo Hello World
+```
 
-7. Right-click your image -> Run Interactive
+Save the file with `File menu -> Save` or `Ctrl+S` and name it `Dockerfile`. At this point, you should see the text become **syntax highlighted** and the file appear in the Explorer sidebar on the left:
 
-   1. Hello World!
+![first](/home/nacl/UW/mse479/containers/tutorial/img/first.png)
 
-8. Now try:
+Now open a terminal (`Terminal menu -> New Terminal`) and run the command:
 
-   ```dockerfile
-   FROM python:3.6-stretch
-   LABEL maintainer="YOUR EMAIL ADDRESS HERE"
-   
-   RUN echo "I run at build time"
-   
-   ENTRYPOINT echo "I run at run time"
-   
-   ```
+`docker build -t [DOCKERHUB-USERNAME]/hello-world .`
 
-   Build, then look at the build output. Look for the "I run at build time" message. Try *running* the container (remember to "run interactive". Look at the output.
+replacing `[DOCKERHUB-USERNAME]` with the username you used to sign up for Dockerhub.
 
-9. A moment to talk about build vs run time
+The first time you run this command might take a few minutes to download all of the files required to build the container (it'll go faster next time!). Once it's done you should see output that ends with a message like this:
+
+```
+Successfully built 7856838c829b
+Successfully tagged naclomi/hello-world:latest
+```
+
+Now, we can run our container either from the Docker sidebar or with the following terminal command:
+
+```
+docker run --rm [DOCKERHUB-USERNAME]/hello-world 
+```
+
+![hello_world_result_2](/home/nacl/UW/mse479/containers/tutorial/img/hello_world_result_2.png)
+
+You did it! You just built your first container image! So....what exactly did you just do? Let's start by walking through the dockerfile code you wrote.
+
+##### Dockerfile Syntax
+
+A dockerfile consists of a series of commands, one per line. Comments start with a `#`, after which the rest of the line is ignored (just like Python). 
+
+Our first command was **FROM**:
+
+- `FROM [image-name]`
+  This bases our new image off the **base image** specified by `[image-name]`, on top of which our changes get layered like new layers of paint on a painting. That name might refer to an image you already have on your computer, or possibly an image published on Docker Hub. Either way, all dockerfiles must start with a FROM command.
+
+  In this case our base image was `python:3.6-stretch`, a container that already comes with Linux and Python 3.6 pre-installed. If we wanted to base an image off the latest version of Ubuntu Linux, it might look something like this: `FROM ubuntu:latest`.
+
+Then, we issued an **ENTRYPOINT** command:
+
+- `ENTRYPOINT [terminal-command]`
+  This sets what command will be executed when the container image is actually run with `docker run`. Only the last ENTRYPOINT command in the Dockerfile will actually take effect, while the rest will be ignored.
+
+  In this case, we issue the command `echo Hello World`, which prints "Hello World" to the terminal. Any command you normally type into the terminal could be put here, though keep in mind that command will only have access to what your Dockerfile copies into the container. TODO: exercise trying to access host-side files
+
+##### The `build` command and image tags
+
+To build a container, we run the `docker build` command which takes the form:
+
+`docker build -t [image-name] [project-directory]`
+
+The `-t [image-name]` flag specifies what we want to call, or **tag**, the image. We can actually specify as many tags as we like, by repeating the `-t [image-name]` flag with new names. By convention, names take the form:
+
+`[user-name]/[image-name]:[image-version]`
+
+where `[user-name]` is your Dockerhub username, `image-name` is what you'd like to call the image, and `[image-version]` is a version number like `1.0` or `latest` (the default version). If you leave out the `:[image-version]` section of the name, Docker will just assume the version is `latest`.
+
+Finally, `[project-directory]` specifies the folder on your computer that contains the `Dockerfile` you would like to compile. In this case, since our terminal was already in the project directory, we just specified "the current location" with `.` .
+
+##### Build-time versus run-time
+
+Let's add a new command to our Dockerfile:
+
+```dockerfile
+# My first Dockerfile
+FROM python:3.6-stretch
+
+# New command:
+RUN echo Hello Galaxy
+
+ENTRYPOINT echo Hello World
+
+```
+
+Save the file and re-run the `docker build` command from the previous exercise (recall you can use the up arrow key in the terminal to retrieve previous terminal commands you've run). In general, you need to run `docker build` every time you modify the Dockerfile for your changes to actually take effect.
+
+Once it's built, re-run the container with `docker run`.
+
+Let's look at the output for all of this:
+
+```
+user@debian:~/hello-world$ docker build -t naclomi/hello-world .
+Sending build context to Docker daemon  2.048kB
+Step 1/3 : FROM python:3.6-stretch
+ ---> d8e3ac20e6dd
+Step 2/3 : RUN echo Hello Galaxy
+ ---> Running in 83cf57ff4447
+Hello Galaxy
+Removing intermediate container 83cf57ff4447
+ ---> c1c2c5086c1f
+Step 3/3 : ENTRYPOINT echo Hello World
+ ---> Running in b6fb35bc5148
+Removing intermediate container b6fb35bc5148
+ ---> 26a6f4c65850
+Successfully built 26a6f4c65850
+Successfully tagged naclomi/hello-world:latest
+user@debian:~/hello-world$ docker run naclomi/hello-world 
+Hello World
+user@debian:~/hello-world$ 
+```
+
+![output_times](/home/nacl/UW/mse479/containers/tutorial/img/output_times.png)
+
+Gosh! Let's call attention to the place where our two `echo` messages showed up. The `echo` issued by the `RUN` command happened when we ran `docker build`, while the `echo` issued by `ENTRYPOINT` happened when we ran `docker run`.
+
+This is a really important concept:
+
+**RUN commands happen at "build time", while the ENTRYPOINT command happens at "run time"**
+
+In practice, this means the `RUN` commands only happen once when you build the container image, and then the `ENTRYPOINT` will happen every time any user out there in the wide world runs the image. This division of build time and run time is useful because it allows us to issue terminal commands that install software once at build time, and then never have to worry about them again.
+
+Taking a step back, the best way to think about a Docker container might be as a fish tank: 
+
+![fish_tank](/home/nacl/UW/mse479/containers/tutorial/img/fish_tank.jpeg)*(Photo by [Sarah Brown](https://unsplash.com/@sweetpagesco?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on Unsplash)*
+
+The Dockerfile is the instruction manual telling you how to assemble the tank. At build-time, you follow the instructions to pour rocks into the bottom of the tank and set up all of the tank's decorations. Then, at run time, you fill the tank with water and introduce the fish. The `RUN` commands specify how and where to put the tank decorations. The `ENTRYPOINT` command specifies what fish we will eventually put in the tank. The `docker run` terminal command actually pours the water and introduces the fish.
+
+##### Building a container with files
+
+Let's start work on our textbook-writer image. Create a new folder on your computer somewhere other than within `hello-world`. Call the new folder `my-textbook`. Open it in VS Code, create a new file, and save it in the directory as `Dockerfile`. 
 
 10. Copy our source in, change entrypoint:
 
@@ -309,3 +404,12 @@ Ok, so how did all of those files get there?
 
 Some content adapted from The Carpentries' [Docker lesson](https://carpentries-incubator.github.io/docker-introduction/), retrieved on Mar 10, 2021
 
+
+
+
+
+
+
+TODO: unused text--
+
+If an image with the name you specify in the build command already exists on your computer, rather than getting overwritten or deleted it continues to exist on your computer with a gibberish name:
