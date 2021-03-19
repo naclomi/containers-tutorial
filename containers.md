@@ -675,9 +675,41 @@ And once you're done, delete the container with the command:
 
 **Make sure to delete the container once you're done here**, to make sure you don't leave resources in the cloud that may use up funds.
 
-##### Mounting a file store to an Azure container 
+##### Using cloud file stores for Azure container input/output
 
-TODO
+To get files in and out of a container running in Azure, we can mount Azure file stores similarly to how we mount folders when we use `docker run` locally. Let's get some practice with this by using the `naclomi/textbook-writer` image to generate a PDF in the cloud.
+
+Let's start by creating a file store for the container output. It's a little convoluted, but Azure file stores exist within an administration hierarchy that looks like this:
+
+`Subscription (eg, billing) -> Resource Group -> Storage Account -> File Share -> Your files  `
+
+Yikes, right? Anyway, we need to create a new storage account, and then within that create a file share. Then, when we start our Docker container, we can point it towards that file share and it put stuff in it.
+
+Start by opening the Azure sidebar in VS Code and expanding the `STORAGE` section. Then, click the + button to create a new storage account.
+
+![storage_1](img/storage_1.png)
+
+VS Code will then ask you for a few details:
+
+- What subscription to create the account within. Select the subscription for this class.
+- A unique name for the account This name can only contain letters and numbers, and has to be unique across all of Azure (how dramatic!). You can choose whatever you want, but to make it easier to find a name that isn't taken it helps to prefix it with your own username.
+
+After this, VS Code will spin a bit waiting for Azure to finish creating your storage account. Once it's done, it'll appear under the class subscription in the `STORAGE` area. Expand the account, right-click `File Shares`, and select `Create File Share...`
+
+![new_share](img/new_share.png)
+
+VS Code will then ask for:
+
+- A name for the file share. This one doesn't have to be unique across Azure, and can contain dashes. Name it something simple and informative, like `dockeroutput` .
+- The max size of the share, in GB. Specify the minimum, `1`. We won't be needing much for this example.
+
+If all goes well, you should see the share appear in the storage explorer:
+
+![fileshare_done](img/fileshare_done.png)
+
+Now we're ready to run a container that connects to it!
+
+TODO: finish
 
 ## Notes and References
 
