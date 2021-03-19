@@ -223,7 +223,7 @@ Images are defined through a **Dockerfile**, a little script that instructs Dock
 
 To get started, create a folder somewhere on your computer called `hello-world`. We'll be storing source code for our container image there. Next, open it in VSCode through the Explorer sidebar tab's "Open Folder" button:
 
-![open_folder](/home/nacl/UW/mse479/containers/tutorial/img/open_folder.png)
+![open_folder](img/open_folder.png)
 
 If you already had a folder or project open, you may need to close it by navigating to `File menu -> Close Folder`.
 
@@ -238,7 +238,7 @@ ENTRYPOINT echo Hello World
 
 Save the file with `File menu -> Save` or `Ctrl+S` and name it `Dockerfile`. At this point, you should see the text become **syntax highlighted** and the file appear in the Explorer sidebar on the left:
 
-![first](/home/nacl/UW/mse479/containers/tutorial/img/first.png)
+![first](img/first.png)
 
 Now open a terminal (`Terminal menu -> New Terminal`) and run the command:
 
@@ -259,7 +259,7 @@ Now, we can run our container either from the Docker sidebar or with the followi
 docker run --rm [DOCKERHUB-USERNAME]/hello-world 
 ```
 
-![hello_world_result_2](/home/nacl/UW/mse479/containers/tutorial/img/hello_world_result_2.png)
+![hello_world_result_2](img/hello_world_result_2.png)
 
 You did it! You just built your first container image! So....what exactly did you just do? Let's start by walking through the dockerfile code you wrote.
 
@@ -337,7 +337,7 @@ Hello World
 user@debian:~/hello-world$ 
 ```
 
-![output_times](/home/nacl/UW/mse479/containers/tutorial/img/output_times.png)
+![output_times](img/output_times.png)
 
 Gosh! Let's call attention to the place where our two `echo` messages showed up. The `echo` issued by the `RUN` command happened when we ran `docker build`, while the `echo` issued by `ENTRYPOINT` happened when we ran `docker run`.
 
@@ -349,7 +349,7 @@ In practice, this means the `RUN` commands only happen once when you build the c
 
 Taking a step back, the best way to think about a Docker container might be as a fish tank: 
 
-![fish_tank](/home/nacl/UW/mse479/containers/tutorial/img/fish_tank.jpeg)*(Photo by [Sarah Brown](https://unsplash.com/@sweetpagesco?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on Unsplash)*
+![fish_tank](img/fish_tank.jpeg)*(Photo by [Sarah Brown](https://unsplash.com/@sweetpagesco?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on Unsplash)*
 
 The Dockerfile is the instruction manual telling you how to assemble the tank. At build-time, you follow the instructions to pour rocks into the bottom of the tank and set up all of the tank's decorations. Then, at run time, you fill the tank with water and introduce the fish. The `RUN` commands specify how and where to put the tank decorations. The `ENTRYPOINT` command specifies what fish we will eventually put in the tank. The `docker run` terminal command actually pours the water and introduces the fish.
 
