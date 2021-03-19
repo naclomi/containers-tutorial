@@ -742,9 +742,7 @@ az container create \
    --azure-file-volume-share-name [FILE SHARE NAME] \
    --azure-file-volume-account-name [STORAGE ACCOUNT NAME] \
    --azure-file-volume-account-key [STORAGE ACCOUNT KEY] \
-   --azure-file-volume-mount-path /output \
-
-
+   --azure-file-volume-mount-path /output 
 ```
 
 Oof, it's complicated, but it's powerful. Good job command line warrior. Run it, and then wait a minute or two for Azure to complete its work. As before, you can check the status of the container with the command:
