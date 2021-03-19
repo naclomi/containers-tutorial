@@ -355,33 +355,119 @@ The Dockerfile is the instruction manual telling you how to assemble the tank. A
 
 ##### Building a container with files
 
-Let's start work on our textbook-writer image. Create a new folder on your computer somewhere other than within `hello-world`. Call the new folder `my-textbook`. Open it in VS Code, create a new file, and save it in the directory as `Dockerfile`. 
+Let's start work on our textbook-writer image. Create a new folder on your computer somewhere other than within `hello-world`. Call the new folder `my-textbook`. Open the folder in VS Code, create a new empty file, and save it in the directory as `Dockerfile`. 
 
-10. Copy our source in, change entrypoint:
+Then, download the source code and data for the textbook writer here and unzip it to the same location as the Dockerfile:
 
-    ```dockerfile
-    TODO
-    ```
+https://drive.google.com/file/d/1tXHQtgXaId9oizIN3aw1ACgHxqLurXkA/view?usp=sharing
 
-11. Build & run. Note dependency failure.
+At this point, your project directory should have the following structure:
 
-12. Add line to pip install markovify 
+![textbook_tree](img/textbook_tree.png)
 
-    ```dockerfile
-    TODO
-    ```
+Make sure your files are arranged this way before your proceed.
 
-13. *Now* build & run :) 
+Next, let's put some code in our Dockerfile:
 
-14. But PDF still doesn't work?!
+```dockerfile
+FROM python:3.6-stretch
 
-15. Apt install line:
+WORKDIR  /usr/src/textbook-writer
+COPY src ./src
+COPY data ./data
 
-    ```dockerfile
-    TODO
-    ```
+ENTRYPOINT python3 ./src/main.py
+```
 
-16. Build & run :) 
+We've got a few new commands going on here. Let's take a closer look at them:
+
+- **COPY**
+  `COPY [source-file-or-folder][destination-file-or-folder]`
+  At build-time, copies a file (or folder full of files), from your computer into the container.
+
+  Note that the source path is relative to the directory structure  on your computer, while the destination path is relative to the directory structure in the container. We're going from one parallel universe to another.
+
+  So, the way to read the first `COPY` command in our code is:
+  "Take the `src` folder on my computer next to my `Dockerfile` (that's the one you just unzipped), and copy it into the container to the location `./src`".
+
+  But the `.` in the destination path means "starting from the current directory". How do we know where in the container we're starting from? That's what the next command is for.
+
+- **WORKDIR**
+  `WORKDIR [container-path]`
+  This sets the "working directory" that all future Dockerfile commands will operate from. It's like when we run `cd` from our terminal, but for Dockerfile commands instead of terminal commands. The path you specify refers to files inside the container, not on the rest of your computer.
+
+So, our script sets the container's working directory to `/usr/src/textbook-writer`, copies the source and data directories we just unzipped into it, and then sets the entrypoint to be the python script we just `COPY`ed in.
+
+Ohkay! Build and run the container!
+
+And if all goes well, you should get........
+
+```
+user@debian:~/my-textbook$ docker run --rm naclomi/my-textbook
+Traceback (most recent call last):
+  File "./src/main.py", line 4, in <module>
+    import markovify
+ModuleNotFoundError: No module named 'markovify'
+user@debian:~/my-textbook$ 
+```
+
+This error. Like, very specifically this error (if you get another error, ask your TA for help).
+
+What's going on here?
+
+##### Installing dependencies
+
+A quick google for "markovify" turns up this:
+
+https://pypi.org/project/markovify/
+
+It looks like "markovify" is a Python library used for generating gibberish text. Our script **depends** on this library! Thank you for your beautiful work library authors!
+
+We'll add a command to our Dockerfile to install this library at build time, so that nobody else has to worry about this software dependency ever again. Modify your Dockerfile to include the following RUN command:
+
+```dockerfile
+FROM python:3.6-stretch
+
+# New line of code:
+RUN pip3 install markovify
+
+WORKDIR  /usr/src/textbook-writer
+COPY src ./src
+COPY data ./data
+
+ENTRYPOINT python3 ./src/main.py
+```
+
+Recall that `RUN` executes a terminal command inside of the container at build time. The command in this case, `pip3 install markovify`, asks the Python package manager ("pip") to download and install the `markovify` library for us (all inside the container). That command is the same kind of thing you could run from your terminal without docker.
+
+Now rebuild the image and rerun the container. You should get some quality garbage output:
+
+![our_own_output](img/our_own_output.png)
+
+Hooray! But what if we want only one sentence of output? We can just pass it as a command line argument, right?
+
+```
+docker run --rm naclomi/my-textbook --sentences 1
+```
+
+![too_many_cooks](img/too_many_cooks.png)
+
+......hmm. That looks like.....it didn't work.
+
+##### Taking command-line arguments
+
+TODO
+
+1. learn about alternative command form
+2. learn about cmd command
+3. But PDF still doesn't work?!
+4. Apt install line:
+
+```dockerfile
+TODO
+```
+
+4. Build & run :) 
 
 ## 3. Deploying containers
 

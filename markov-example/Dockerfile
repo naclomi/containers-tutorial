@@ -9,7 +9,7 @@ RUN apt-get update
 RUN pip3 install --no-cache-dir markovify
 
 # Install tools to make PDFs
-RUN apt-get install -y ghostscript enscript tree
+RUN apt-get install -y ghostscript enscript tree less
 
 WORKDIR  /usr/src/textbook-writer
 COPY src/ ./src/
