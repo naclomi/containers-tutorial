@@ -628,19 +628,56 @@ To confirm everything is working, try out the command `az container list`. It sh
 
 ##### Running containers in Azure
 
-1. `az container create --name testcontainer2 --image naclomi/textbook-writer --cpu 0.5 --memory 0.5 --restart-policy Never --no-wait`
+To run a container as an Azure Container Instance we'll use the `az container create` command, which is like a cloud version of `docker pull` and `docker run` combined into one command. It'll take the following form:
 
-2. `az container logs --name testcontainer2`
+`az container create --name [INSTANCE NAME] --image [DOCKER IMAGE NAME] --cpu [CORES] --memory [GB RAM] --restart-policy Never --no-wait`
 
-3. `az container delete --name testcontainer`
+There's a lot going on here. Let's step through it:
 
-4. for interactive: `az container attach --name testcontainer2`
+* The `[INSTANCE NAME]` is a name you'll use to refer to this container in your cloud account. It can be whatever you want as long as it doesn't have spaces. Let's use something like `my-cloud-textbook`.
+* The `[DOCKER IMAGE NAME]` refers to the image you published onto Docker Hub. In the case of this tutorial, that was `[DOCKERHUB USERNAME]/my-textbook`, putting your user name in the appropriate spot.
+* The `--cpu [CORES]` flag specifies how many CPU cores we need to run our container. We're not doing much computation for this example, so to save money let's set it to something small like `0.5`. 
+* The `--memory [GB RAM]` flag specifies how much RAM we need to run our container. Similarly to the CPU flag, let's use `0.5`. 
+* The `--restart-policy Never` flag tells Azure that after our container finishes running, it should just be left in a stopped state. **This is important**, because without it **the container would get re-run in a loop indefinitely**, until we manually stopped it, and this could use up a lot of resources (eg, $$$). The default behavior is useful when a container runs an always-available service like a web server, but for our purposes is really really not what we want.
+* The `--no-wait` flag tells the terminal to not hang and wait until the container is set up. Deployment can take a while, since Azure has to find an unused computer in the cloud and download our image to it, so this will let us do other terminal operations while that all is happening.
 
-   reference: https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
+We'll master all of those options, the more we use Azure. For now,  just copy and paste the command with the appropriate values replacing the blanks denoted by `[]`s.
 
-5. TODO: storage accounts
+To confirm that your container was created, click the little refresh icon in the `RESOURCE GROUPS` box of the Azure sidebar and expand your resource group. You should see the name of your container show up there:
 
-6. TODO: app service
+![new_container](img/new_container.png)
+
+Wait a few minutes, and then try running the command:
+
+` az container logs --name my-cloud-textbook` 
+
+If you named your container instance something else, just replace `my-cloud-textbook` with the appropriate value.
+
+This command will print the output of the container (the stuff that would show up in our terminal automatically after `docker run`, if we were running locally). You should now see some quality garbage:
+
+![cloud_garb](img/cloud_garb.png)
+
+If the command doesn't output anything, or returns an error, try waiting a bit longer for the cloud to finish pulling your image. If it's taking a while, you can see Azure's progress with the command:
+
+`az container show --name my-cloud-textbook`
+
+This outputs a lot of detailed information about the container, including when it started and completed pulling the image from Docker Hub:
+
+![cloud_progress](img/cloud_progress.png)
+
+At this point, you can re-run your container with the command:
+
+`az container start --name my-cloud-textbook --no-wait`
+
+And once you're done, delete the container with the command:
+
+`az container delete --name my-cloud-textbook`
+
+**Make sure to delete the container once you're done here**, to make sure you don't leave resources in the cloud that may use up funds.
+
+##### Mounting a file store to an Azure container 
+
+TODO
 
 ## Notes and References
 
@@ -648,12 +685,16 @@ Some content adapted from The Carpentries' [Docker lesson](https://carpentries-i
 
 Markov text generator trained on portions of *Mechanics of Materials*, Wiley ISBN 0-471-59399-0, retrieved from https://ocw.mit.edu/courses/materials-science-and-engineering/3-11-mechanics-of-materials-fall-1999/modules/ on March 5th, 2021
 
+For a full reference of the `az container` set of CLI commands, refer to: reference: https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
+
 ## TODO
 
 - Fit in somewhere: If an image with the name you specify in the build command already exists on your computer, rather than getting overwritten or deleted it continues to exist on your computer with a gibberish name:
 
-- Fit in somewhere: using `\` to split a command across multiple lines
+- Fit in somewhere: using `\` to split a command across multiple lines in a Dockerfile
 
 - Fit in somewhere: account passwords using environment variables
+
+- Explore the use of Azure App Service
 
   
