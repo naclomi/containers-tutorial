@@ -707,26 +707,84 @@ If all goes well, you should see the share appear in the storage explorer:
 
 ![fileshare_done](img/fileshare_done.png)
 
-Now we're ready to run a container that connects to it!
+Now we're ready to run a container that connects to it.
 
-TODO: finish
+We connect the file share when we run the `az create` command. We'll need to add a few extra flags:
+
+- `--azure-file-volume-account-name [NAME]` 
+  The name of the storage account we created
+
+- `--azure-file-volume-account-key [KEY]`
+  The key of the storage account. Think of this as like an auto-generated password. You can get the key by right-clicking the storage account in the sidebar and selecting `Copy Primary Key`, which will put it in your clipboard. You can then paste it into a text editor.
+
+  ![copy_key](img/copy_key.png)
+
+- `--azure-file-volume-share-name [NAME]` 
+  The name of the file share *within* the storage account we created
+
+- `--azure-file-volume-mount-path [CONTAINER PATH]`
+  The path inside of the container to mount the share to. This is like the second half of the `-v [LOCAL PATH]:[CONTAINER PATH]` flag that you pass to `docker run` when mounting a folder on your computer.
+
+In addition to the above flags that mount a file share to our container, we also need to tell the container to generate a PDF. Unlike the Docker CLI, Azure doesn't let us add extra flags when we run the container, it only lets us replace the entrypoint entirely:
+
+- `--command-line "[COMMAND HERE]"`
+  This flag will replace the container entrypoint with whatever you specify in double-quotes. This is the equivalent of `--entrypoint` when using `docker run`.
+
+We'll mount the file share to the location `/output` in our container, and then save a file there called `text.pdf` by using then entrypoint "`python3 src/main.py --pdf /output/text.pdf`". The finished command line will look like this, replacing the `[ ]`-indicated blanks with their appropriate values.
+
+```
+az container create \
+   --name my-cloud-textbook \
+   --image naclomi/textbook-writer \
+   --cpu 0.5 --memory 0.5 \
+   --restart-policy Never --no-wait \
+   --command-line "python3 src/main.py --pdf /output/text.pdf" \
+   --azure-file-volume-share-name [FILE SHARE NAME] \
+   --azure-file-volume-account-name [STORAGE ACCOUNT NAME] \
+   --azure-file-volume-account-key [STORAGE ACCOUNT KEY] \
+   --azure-file-volume-mount-path /output \
+
+
+```
+
+Oof, it's complicated, but it's powerful. Good job command line warrior. Run it, and then wait a minute or two for Azure to complete its work. As before, you can check the status of the container with the command:
+
+`az container show --name my-cloud-textbook`
+
+Once it's all done, click the refresh icon in the `STORAGE` box, and expand the file share by clicking the arrow next to it. You should see our pdf sitting there! Right click it, and select `Download`:
+
+![download](img/download.png)
+
+VS Code will ask you where to save the file to. Select your project folder from the list (or browse for whatever other location you like), then open it up in your computer's file explorer.
+
+![downloaded_pdf](img/downloaded_pdf.png)
+
+Congratulations -- this was a lot of steps for some pretty advanced computing, and you did it!
+
+Now that the file share is created, you can rerun the container with `az container start` or create new ones that connect to the share with `az container create` as much as you like. The steps preceding the `az container create` command only have to be done once.
+
+Remember to delete all of the resources you used from Azure once you're done, using the `az container delete` command for the containers and by right-clicking the storage account and selecting `Delete Storage Account...`.
 
 ## Notes and References
 
-Some content adapted from The Carpentries' [Docker lesson](https://carpentries-incubator.github.io/docker-introduction/), retrieved on March 10th, 2021
+- Some content adapted from The Carpentries' [Docker lesson](https://carpentries-incubator.github.io/docker-introduction/), retrieved on March 10th, 2021
 
-Markov text generator trained on portions of *Mechanics of Materials*, Wiley ISBN 0-471-59399-0, retrieved from https://ocw.mit.edu/courses/materials-science-and-engineering/3-11-mechanics-of-materials-fall-1999/modules/ on March 5th, 2021
+- Markov text generator trained on portions of *Mechanics of Materials*, Wiley ISBN 0-471-59399-0, retrieved from https://ocw.mit.edu/courses/materials-science-and-engineering/3-11-mechanics-of-materials-fall-1999/modules/ on March 5th, 2021
 
-For a full reference of the `az container` set of CLI commands, refer to: reference: https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
+- For a full reference of `Dockerfile` commands, refer to:
+  https://docs.docker.com/engine/reference/builder/
+
+- For a full reference of the `az container` set of CLI commands, refer to:
+  https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
 
 ## TODO
 
 - Fit in somewhere: If an image with the name you specify in the build command already exists on your computer, rather than getting overwritten or deleted it continues to exist on your computer with a gibberish name:
 
-- Fit in somewhere: using `\` to split a command across multiple lines in a Dockerfile
+- Describe how to use `\` to split a command across multiple lines in a Dockerfile
 
-- Fit in somewhere: account passwords using environment variables
+- Describe deploying account passwords using environment variables
 
-- Explore the use of Azure App Service
+- Teach layering and ordering concepts
 
   
