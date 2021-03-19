@@ -531,20 +531,71 @@ To install them, you'll need to add a command to the right place in your Dockerf
 
 ## 3. Deploying containers
 
-17. `docker push [DOCKERHUB-USERNAME]/my-first-container`
-18. Azure portal -> Services -> Container Instances (https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.ContainerInstance%2FcontainerGroups)
-    1. Add
-    2. Choose your resource group
-    3. Choose a name
-    4. Image source: "Docker Hub or other registry"
-    5. Image: Enter your container name
-    6. Change size to 0.5 GiB memory (we don't need much for this)
-    7. Review & Create -> Create
-    8. Wait for it to deploy, then "Go To Resource"
-    9. Containers -> Logs
-19. There are many ways on Azure to deploy a container. See also: app service
-20. TODO: yikes there is no way to mount a volume using a GUI
-    https://docs.microsoft.com/en-us/azure/container-instances/container-instances-volume-azure-files
+##### Publishing images on Docker Hub
+
+The easiest way to get your new image onto other computers is by **pushing** your image to your Docker Hub account. First things first, log in to your Docker Hub account via the CLI. Open a terminal in VS Code and run:
+
+`docker login`
+
+Follow the prompts to provide your username and password, and confirm that you see the message `Login Succeeded`.
+
+Next, use the `push` command to publish the image you built in the previous section:
+
+`docker push [DOCKERHUB-USERNAME]/my-textbook`,
+
+replacing `[DOCKERHUB-USERNAME]` appropriately. This will upload the image, including all of the files you copied into it, to Docker Hub. Note that because it will now be publicly available across the web, **you should make sure not to include any sensitive information, like account passwords, in the image itself**. If that kind of data is required, mount the files containing it at run-time or use environment variables.
+
+The CLI will begin the process of uploading your container files to Dockerhub, after which it should display output that looks like the following:
+
+```
+Using default tag: latest
+The push refers to repository [docker.io/naclomi/my-textbook]
+3cc02027512c: Pushed 
+39712aead534: Pushed 
+1fe39d5d8cc8: Pushed 
+321644d0af15: Pushed 
+520dcae2068c: Mounted from library/python 
+929becff1737: Mounted from library/python 
+3652ad81051a: Mounted from library/python 
+931a85bd816c: Mounted from library/python 
+8764e431c07e: Mounted from library/python 
+19ab65c2eea3: Mounted from library/python 
+d2fb5ee0c8fd: Mounted from library/python 
+7d8e945003fe: Mounted from library/python 
+70fd9a3b3b80: Mounted from library/python 
+latest: digest: sha256:a736b12cdf30fc6fd7605aacdf8487f189102875048fd5b638d3cffd3253041d size: 3054
+```
+
+Your image is now on the web! You can see and alter information about it from your account dashboard at https://hub.docker.com/:
+
+![docker_web_dash](img/docker_web_dash.png)
+
+Anybody can now pull it down to their computer and run it, by referencing the name `[DOCKERHUB-USERNAME]/my-textbook` . Have a friend try it out :) .
+
+##### Running containers on Azure
+
+TODO
+
+1. CLI path:
+   1. `az account set --subscription <id>`
+   2. `az configure --defaults group=<name>`
+   3. `az container create --name testcontainer2 --image naclomi/textbook-writer --cpu 0.5 --memory 0.5 --restart-policy Never --no-wait`
+   4. `az container logs --name testcontainer2`
+   5. `az container delete --name testcontainer`
+   6. for interactive: `az container attach --name testcontainer2`
+   7. reference: https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
+2. GUI/portal path:
+   1. Azure portal -> Services -> Container Instances (https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.ContainerInstance%2FcontainerGroups)
+   2. Add
+   3. Choose your resource group
+   4. Choose a name
+   5. Image source: "Docker Hub or other registry"
+   6. Image: Enter your container name
+   7. Change size to 0.5 GiB memory (we don't need much for this)
+   8. Review & Create -> Create
+   9. Wait for it to deploy, then "Go To Resource"
+   10. Containers -> Logs
+3. There are many ways on Azure to deploy a container. See also: app service
 
 ## Notes and References
 
@@ -552,6 +603,12 @@ Some content adapted from The Carpentries' [Docker lesson](https://carpentries-i
 
 Markov text generator trained on portions of *Mechanics of Materials*, Wiley ISBN 0-471-59399-0, retrieved from https://ocw.mit.edu/courses/materials-science-and-engineering/3-11-mechanics-of-materials-fall-1999/modules/ on March 5th, 2021
 
-TODO: unused text--
+## TODO
 
-If an image with the name you specify in the build command already exists on your computer, rather than getting overwritten or deleted it continues to exist on your computer with a gibberish name:
+- Fit in somewhere: If an image with the name you specify in the build command already exists on your computer, rather than getting overwritten or deleted it continues to exist on your computer with a gibberish name:
+
+- Fit in somewhere: using `\` to split a command across multiple lines
+
+- Fit in somewhere: account passwords using environment variables
+
+  
