@@ -570,32 +570,77 @@ Your image is now on the web! You can see and alter information about it from yo
 
 ![docker_web_dash](img/docker_web_dash.png)
 
-Anybody can now pull it down to their computer and run it, by referencing the name `[DOCKERHUB-USERNAME]/my-textbook` . Have a friend try it out :) .
+Have a friend try to pull it down to their computer and run it :) .
 
-##### Running containers on Azure
+##### Containers in the cloud
 
-TODO
+We can run instances of our container image in the cloud, if we need access to more powerful computers or more storage than we have available locally. In this way,  we are thinking of the cloud as a supercomputer that we submit jobs to in the form of Docker container images. 
 
-1. CLI path:
-   1. `az account set --subscription <id>`
-   2. `az configure --defaults group=<name>`
-   3. `az container create --name testcontainer2 --image naclomi/textbook-writer --cpu 0.5 --memory 0.5 --restart-policy Never --no-wait`
-   4. `az container logs --name testcontainer2`
-   5. `az container delete --name testcontainer`
-   6. for interactive: `az container attach --name testcontainer2`
-   7. reference: https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
-2. GUI/portal path:
-   1. Azure portal -> Services -> Container Instances (https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.ContainerInstance%2FcontainerGroups)
-   2. Add
-   3. Choose your resource group
-   4. Choose a name
-   5. Image source: "Docker Hub or other registry"
-   6. Image: Enter your container name
-   7. Change size to 0.5 GiB memory (we don't need much for this)
-   8. Review & Create -> Create
-   9. Wait for it to deploy, then "Go To Resource"
-   10. Containers -> Logs
-3. There are many ways on Azure to deploy a container. See also: app service
+A classic example might be to develop an ML model training script on your computer over a small subset of the data you have access to, and then deploy it to the cloud in a container where it will train on a beefy computer over the full dataset.
+
+##### Setting up the Azure CLI
+
+There are many ways to run a Docker container in Microsoft Azure. The most general-purpose of which is a service they provide called **Azure Container Instances**. We'll use the **Azure CLI** to interact with it. The Azure CLI runs on the terminal and behaves similarly to the Docker CLI, but its commands all start with `az` rather than `docker`.
+
+Get started by opening a VS Code terminal and logging in to Azure with the command:
+
+`az login`
+
+This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal.
+
+Next, we'll tell the CLI what **subscription** and **resource group** to work within. You can find this information by opening the Azure sidebar and looking under the Resource Groups box. Right-click the resource group created for this exercise (TODO: do students have to create their own resource groups?), and select `View Properties`:
+
+![rg](img/rg.png)
+
+You may have to log in to Azure again through the Azure sidebar to see all of your available resource groups.
+
+Once you click `View Properties`, a bunch of configuration information should open up in the code editing area. It'll look something like this:
+
+```json
+{
+    "id": "/subscriptions/ab12345c-def6-7890-gh12-345678i90jkl/resourceGroups/ContainerTutorial-NaomiAlterman",
+    "name": "ContainerTutorial-NaomiAlterman",
+    "type": "Microsoft.Resources/resourceGroups",
+    "properties": {
+        "provisioningState": "Succeeded"
+    },
+    "location": "westus"
+}
+```
+
+The id of the resource group takes the following form:
+
+`/subscriptions/[SUBSCRIPTION ID]/resourceGroups/[GROUP NAME]`
+
+Note down both the subscription ID and group name from the "id" section of the configuration info in your VS code window (don't use the values in the above example). The subscription is the billing account paying for your cloud resources; in our case, the whole class falls under one subscription. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you start using.
+
+In your terminal, set the active subscription with the command:
+
+`az account set --subscription [SUBSCRIPTION ID]`
+
+replacing [SUBSCRIPTION ID] with the appropriate value you noted down earlier. Then, set the resource group with the command:
+
+`az configure --defaults group=[GROUP NAME] `
+
+replacing [GROUP NAME] with the appropriate value you noted down earlier. 
+
+To confirm everything is working, try out the command `az container list`. It should return the output `[]`, indicating our Azure account doesn't currently have any containers loaded (but is ready to!).
+
+##### Running containers in Azure
+
+1. `az container create --name testcontainer2 --image naclomi/textbook-writer --cpu 0.5 --memory 0.5 --restart-policy Never --no-wait`
+
+2. `az container logs --name testcontainer2`
+
+3. `az container delete --name testcontainer`
+
+4. for interactive: `az container attach --name testcontainer2`
+
+   reference: https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
+
+5. TODO: storage accounts
+
+6. TODO: app service
 
 ## Notes and References
 
