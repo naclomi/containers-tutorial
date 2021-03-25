@@ -42,6 +42,13 @@ After you have Docker installed, sign up for an account on Docker Hub:
 
 https://hub.docker.com/
 
+## Tutorial Modules
+
+### [Part 1: Running Containers](01-running-containers.md)
+
+### [Part 2: Building Containers](02-building-containers.md)
+
+### [Part 3: Deploying Containers](03-deploying-containers.md)
 
 ## Notes and References
 
