@@ -308,7 +308,7 @@ Replace the source text that the generator script trains off of with your own co
 
 #### Stretch challenge #2
 
-If you try generating a PDF as you did in the "Running containers" portion of this tutorial, you'll find that your container still doesn't fully work. It's missing the programs our script uses to save PDF files: ` ghostscript` and `enscript`.
+If you try generating a PDF as you did in the "Running containers" portion of this tutorial, you'll find that your container still doesn't fully work. It's missing the programs our script uses to save PDF files: `ghostscript` and `enscript`.
 
 To install them, you'll need to add a command to the right place in your Dockerfile that uses the Linux package manager `apt-get` . See if you can get it working.
 
