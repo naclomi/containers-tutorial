@@ -12,9 +12,20 @@ In this tutorial series we are going to learn how to:
 
 #### Requirements and expectations
 
-TODO:
+This tutorial series makes extensive use of VS Code, Docker, VS Code's Azure and Docker extensions, and the Azure CLI. It assumes you have these installed on your system before proceeding. On Windows, it also assumes you have WSL2 installed, which is a requirement for Docker. For instructions on how to install each, please see:
 
-VSCode, Docker, Python, Azure account
+- [VS Code](https://code.visualstudio.com/Download)
+- [VS Code Azure plugin set](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack) (includes Docker plugin)
+- [Docker](https://docs.docker.com/desktop/)
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+
+The tutorial content makes light use of shell scripting and Python. It does not expect you to write any such scripts on your own, but it will help to have a passing familiarity with them.
+
+Parts 1 and 2 all run locally but will require a free Docker Hub account, which you can register for (here)[https://hub.docker.com/signup]
+
+
+Part 3 walks through cloud deployment, for which you will need Microsoft Azure login credentials.
+
 
 ## Background
 
@@ -62,7 +73,7 @@ https://hub.docker.com/
 - For a full reference of the `az container` set of CLI commands, refer to:
   https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
 
-## TODO
+## TODOs
 
 - Fit in somewhere: If an image with the name you specify in the build command already exists on your computer, rather than getting overwritten or deleted it continues to exist on your computer with a gibberish name:
 
@@ -72,4 +83,4 @@ https://hub.docker.com/
 
 - Teach layering and ordering concepts
 
-  
+- Fit in somewhere: an exercise trying to access host-side files from inside a container shell

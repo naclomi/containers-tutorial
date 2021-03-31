@@ -64,7 +64,7 @@ Then, we issued an **ENTRYPOINT** command:
 - `ENTRYPOINT [terminal-command]`
   This sets what command will be executed when the container image is actually run with `docker run`. Only the last ENTRYPOINT command in the Dockerfile will actually take effect, while the rest will be ignored.
 
-  In this case, we issue the command `echo Hello World`, which prints "Hello World" to the terminal. Any command you normally type into the terminal could be put here, though keep in mind that command will only have access to what your Dockerfile copies into the container. TODO: exercise trying to access host-side files
+  In this case, we issue the command `echo Hello World`, which prints "Hello World" to the terminal. Any command you normally type into the terminal could be put here, though keep in mind that command will only have access to what your Dockerfile copies into the container.
 
 #### The `build` command and image tags
 

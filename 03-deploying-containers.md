@@ -57,7 +57,7 @@ Get started by opening a VS Code terminal and logging in to Azure with the comma
 
 This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal.
 
-Next, we'll tell the CLI what **subscription** and **resource group** to work within. You can find this information by opening the Azure sidebar and looking under the Resource Groups box. Right-click the resource group created for this exercise (TODO: do students have to create their own resource groups?), and select `View Properties`:
+Next, we'll tell the CLI what **subscription** and **resource group** to work within. You can find this information by opening the Azure sidebar and looking under the Resource Groups box. Right-click the resource group created for your time in this class, of the form `rg-amlclass-[UW STUDENT ID]`, and select `View Properties`:
 
 ![rg](img/rg.png)
 
