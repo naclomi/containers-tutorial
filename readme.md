@@ -14,6 +14,7 @@ In this tutorial series we are going to learn how to:
 
 This tutorial series makes extensive use of VS Code, Docker, VS Code's Azure and Docker extensions, and the Azure CLI. It assumes you have these installed on your system before proceeding. On Windows, it also assumes you have WSL2 installed, which is a requirement for Docker. For instructions on how to install each, please see:
 
+- [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (only needed on Windows)
 - [VS Code](https://code.visualstudio.com/Download)
 - [VS Code Azure plugin set](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack) (includes Docker plugin)
 - [Docker](https://docs.docker.com/desktop/)
@@ -21,7 +22,7 @@ This tutorial series makes extensive use of VS Code, Docker, VS Code's Azure and
 
 The tutorial content makes light use of shell scripting and Python. It does not expect you to write any such scripts on your own, but it will help to have a passing familiarity with them.
 
-Parts 1 and 2 all run locally but will require a free Docker Hub account, which you can register for (here)[https://hub.docker.com/signup]
+Parts 1 and 2 all run locally but will require a free Docker Hub account, which you can register for [here](https://hub.docker.com/signup)
 
 
 Part 3 walks through cloud deployment, for which you will need Microsoft Azure login credentials.

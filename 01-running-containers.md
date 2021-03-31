@@ -112,7 +112,9 @@ And now let's look at the source code, by using the `cat` command to print the f
 
 ![source](img/source.png)
 
-Neato. We can see that the script uses the library [markovify](https://pypi.org/project/markovify/) to generate random text, but because the docker container comes packaged with it (and with Python 3.6), we didn't need to manually install it on our computer to run the code!
+Neato.
+
+We can see that the script uses the library [markovify](https://pypi.org/project/markovify/) to generate random text. We didn't need to install this library ahead of time, because it came packaged inside the script's container. This is one of the main benefits of containeriazation!
 
 To exit the virtual terminal, run the command `exit` or use the keyboard shortcut `Ctrl+D`
 
