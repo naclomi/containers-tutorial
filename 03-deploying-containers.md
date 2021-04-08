@@ -51,17 +51,25 @@ A classic example might be to develop an ML model training script on your comput
 
 There are many ways to run a Docker container in Microsoft Azure. The most general-purpose of which is a service they provide called **Azure Container Instances**. We'll use the **Azure CLI** to interact with it. The Azure CLI runs on the terminal and behaves similarly to the Docker CLI, but its commands all start with `az` rather than `docker`.
 
-Get started by opening a VS Code terminal and logging in to Azure with the command:
+Get started by downloading and installing the Azure CLI on your computer here:
+
+https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
+
+Once you're finished with that, open a VS Code terminal and logging in to Azure with the command:
 
 `az login`
 
-This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal.
+This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal. You should see it list the Azure **subscriptions** you have access to (that is, the billing accounts paying for your cloud resources). In our case, the whole class falls under one subscription, called "Microsoft Azure Sponsorship 2" (labeled (1) in figure).
 
-Next, we'll tell the CLI what **subscription** and **resource group** to work within. You can find this information by opening the Azure sidebar and looking under the Resource Groups box. Right-click the resource group created for your time in this class, of the form `rg-amlclass-[UW STUDENT ID]`, and select `View Properties`:
+![rg](img/subscriptions.png)
+
+We'll start by setting the CLI to use this subscription by default, so we don't have to specify it for every `az` command we run. Copy the value in the `id` field of this output (labeled (2) in figure)  and paste it into the following command, which you should run in your terminal:
+
+`az account set --subscription [SUBSCRIPTION ID]`
+
+Next, we'll tell the CLI what **resource group** to work within. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you'll create or use. You can find this information by opening the Azure sidebar (1) and looking under the Resource Groups box (2), though you may have to log in to Azure again through the sidebar to see it. Expand this class's subscription ("Microsoft Azure Sponsorship 2") and right-click the resource group created for you (3). Its name will take the form `rg-amlclass-[UW STUDENT ID]`. Select `View Properties` (4):
 
 ![rg](img/rg.png)
-
-You may have to log in to Azure again through the Azure sidebar to see all of your available resource groups.
 
 Once you click `View Properties`, a bunch of configuration information should open up in the code editing area. It'll look something like this:
 
@@ -81,19 +89,19 @@ The id of the resource group takes the following form:
 
 `/subscriptions/[SUBSCRIPTION ID]/resourceGroups/[GROUP NAME]`
 
-Note down both the subscription ID and group name from the "id" section of the configuration info in your VS code window (don't use the values in the above example). The subscription is the billing account paying for your cloud resources; in our case, the whole class falls under one subscription. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you start using.
-
-In your terminal, set the active subscription with the command:
-
-`az account set --subscription [SUBSCRIPTION ID]`
-
-replacing [SUBSCRIPTION ID] with the appropriate value you noted down earlier. Then, set the resource group with the command:
+Note down both the group name from the "id" section of the configuration info in your VS code window (don't use the values in the above example). Then, set the resource group with the command:
 
 `az configure --defaults group=[GROUP NAME] `
 
-replacing [GROUP NAME] with the appropriate value you noted down earlier. 
+replacing [GROUP NAME] with the value you just noted down. 
 
-To confirm everything is working, try out the command `az container list`. It should return the output `[]`, indicating our Azure account doesn't currently have any containers loaded (but is ready to!).
+To confirm everything is working, try running the command: 
+
+`az resource list`.
+
+It should return all of the Azure services and objects currently in your resource group, including the Machine Learning workspace you'll be using later in the semester:
+
+![ml](img/ml.png)
 
 #### Running containers in Azure
 

@@ -131,7 +131,7 @@ optional arguments:
   --pdf FILENAME  output as a pdf file
 ```
 
-Since `main.py` is the contianer's entrypoint, any flags we put in our `docker run` command following the image name will be passed to it.  Let's try playing with them. From the terminal:
+Since `main.py` is the container's entrypoint, any flags we put in our `docker run` command following the image name will be passed to it.  Let's try playing with them. From the terminal:
 
 `docker run --rm -it naclomi/textbook-writer --sentences 1  `
 
@@ -159,7 +159,7 @@ where `[host_path]` is the directory on your computer to mount, and `[container_
 
 For our textbook writer, we can mount the current directory the terminal is sitting in to the container path `/output` with this command line (1):
 
-`docker run -v "${PWD}":/output naclomi/textbook-writer --pdf /output/textbook.pdf` 
+`docker run -v ${PWD}:/output naclomi/textbook-writer --pdf /output/textbook.pdf` 
 
 ![pdf_output](img/pdf_output.png)
 
