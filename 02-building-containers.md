@@ -29,7 +29,7 @@ Now open a terminal (`Terminal menu -> New Terminal`) and run the command:
 
 `docker build -t [DOCKERHUB-USERNAME]/hello-world .`
 
-replacing `[DOCKERHUB-USERNAME]` with the username you used to sign up for Dockerhub.
+replacing `[DOCKERHUB-USERNAME]` with the username you used to sign up for Dockerhub. Make sure to include the period `.` a the end of the command :) !
 
 The first time you run this command might take a few minutes to download all of the files required to build the container (it'll go faster next time!). Once it's done you should see output that ends with a message like this:
 
