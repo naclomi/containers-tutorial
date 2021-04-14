@@ -126,7 +126,7 @@ To confirm that your container was created, click the little refresh icon in the
 
 Wait a few minutes, and then try running the command:
 
-` az container logs --name my-cloud-textbook` 
+`az container logs --name my-cloud-textbook` 
 
 If you named your container instance something else, just replace `my-cloud-textbook` with the appropriate value.
 
