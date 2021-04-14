@@ -53,7 +53,7 @@ There are many ways to run a Docker container in Microsoft Azure. The most gener
 
 Get started by downloading and installing the Azure CLI on your computer here:
 
-https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
+[https://docs.microsoft.com/en-us/cli/azure/install-azure-cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
 Once you're finished with that, open a VS Code terminal and logging in to Azure with the command:
 
