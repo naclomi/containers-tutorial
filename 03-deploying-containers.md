@@ -186,7 +186,7 @@ If all goes well, you should see the share appear in the storage explorer:
 
 Now we're ready to run a container that connects to it.
 
-We connect the file share when we run the `az create` command. We'll need to add a few extra flags:
+We connect the file share when we run the `az container create` command. We'll need to add a few extra flags:
 
 - `--azure-file-volume-account-name [NAME]` 
   The name of the storage account we created
