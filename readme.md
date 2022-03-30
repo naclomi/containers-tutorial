@@ -46,13 +46,13 @@ The most common way of interacting with Docker on your computer is with the Dock
 
 ## Installing Docker
 
-Installing Docker can be an unfortunately involved process depending on what operating system 
+Installing Docker can be an unfortunately involved process depending on what operating system you are using. For a general-purpose set-up guide, see here:
 
-- https://carpentries-incubator.github.io/docker-introduction/setup.html
+[https://carpentries-incubator.github.io/docker-introduction/setup.html](https://carpentries-incubator.github.io/docker-introduction/setup.html)
 
 After you have Docker installed, sign up for an account on Docker Hub:
 
-https://hub.docker.com/
+[https://hub.docker.com/](https://hub.docker.com/)
 
 ## Tutorial Modules
 

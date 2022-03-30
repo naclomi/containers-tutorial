@@ -12,6 +12,10 @@ To get started, create a folder somewhere on your computer called `hello-world`.
 
 If you already had a folder or project open, you may need to close it by navigating to `File menu -> Close Folder`.
 
+VSCode may ask if you trust the authors of the files in this folder. Since we created it, we certainly do! Just click 'Yes'. Don't worry about it if this dialog gets skipped entirely, though.
+
+![trust](img/trust.png)
+
 Once you've opened the `hello-world` folder, create a new file (`File menu -> New File` or `Ctrl+N`) and fill it with the following contents:
 
 ```dockerfile
@@ -29,7 +33,7 @@ Now open a terminal (`Terminal menu -> New Terminal`) and run the command:
 
 `docker build -t [DOCKERHUB-USERNAME]/hello-world .`
 
-replacing `[DOCKERHUB-USERNAME]` with the username you used to sign up for Dockerhub. Make sure to include the period `.` a the end of the command :) !
+replacing `[DOCKERHUB-USERNAME]` with the username you used to sign up for Dockerhub. Make sure to include the period `.` at the end of the command :) !
 
 The first time you run this command might take a few minutes to download all of the files required to build the container (it'll go faster next time!). Once it's done you should see output that ends with a message like this:
 
@@ -46,7 +50,7 @@ docker run --rm [DOCKERHUB-USERNAME]/hello-world
 
 ![hello_world_result_2](img/hello_world_result_2.png)
 
-You did it! You just built your first container image! So....what exactly did you just do? Let's start by walking through the dockerfile code you wrote.
+You did it! You just built your first container image! So...what exactly did you just do? Let's start by walking through the dockerfile code you wrote.
 
 #### Dockerfile Syntax
 
@@ -144,7 +148,8 @@ Let's start work on our textbook-writer image. Create a new folder on your compu
 
 Then, download the source code and data for the textbook writer here and unzip it to the same location as the Dockerfile:
 
-https://drive.google.com/file/d/1tXHQtgXaId9oizIN3aw1ACgHxqLurXkA/view?usp=sharing
+[https://drive.google.com/file/d/1tXHQtgXaId9oizIN3aw1ACgHxqLurXkA/view?usp=sharing](https://drive.google.com/file/d/1tXHQtgXaId9oizIN3aw1ACgHxqLurXkA/view?usp=sharing
+)
 
 At this point, your project directory should have the following structure:
 
@@ -185,7 +190,7 @@ So, our script sets the container's working directory to `/usr/src/textbook-writ
 
 Ohkay! Build and run the container!
 
-And if all goes well, you should get........
+And if all goes well, you should get.........
 
 ```
 user@debian:~/my-textbook$ docker run --rm naclomi/my-textbook
@@ -204,7 +209,7 @@ What's going on here?
 
 A quick google for "markovify" turns up this:
 
-https://pypi.org/project/markovify/
+[https://pypi.org/project/markovify/](https://pypi.org/project/markovify/)
 
 It looks like "markovify" is a Python library used for generating gibberish text. Our script **depends** on this library! Thank you for your beautiful work library authors!
 
@@ -302,7 +307,7 @@ CMD ["--sentences", "4"]
 
 Not a necessary feature by any means, but potentially useful.
 
-**Stretch challenge #1**
+#### Stretch challenge #1
 
 Replace the source text that the generator script trains off of with your own content, to create a text generator for something other than a matsci textbook :)
 

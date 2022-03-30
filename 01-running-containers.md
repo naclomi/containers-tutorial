@@ -76,9 +76,9 @@ Using the GUI to run containers is fast and easy, but using the CLI will give us
 
 Now that we've gotten our sea legs, let's try running a container that does something more interesting. The `naclomi/textbook-writer` image contains a python script that uses rudimentary AI techniques to write machine-generated nonsense paragraphs for a materials science textbook. Here's a link to the container's page on Docker Hub:
 
-https://hub.docker.com/r/naclomi/textbook-writer
+[https://hub.docker.com/r/naclomi/textbook-writer](https://hub.docker.com/r/naclomi/textbook-writer)
 
-**EXERCISE: **Use the commands we explored above to pull the image and then run it interactively. If you need reminders of the commands you've previously run, try using the **up and down arrow keys** at the terminal prompt to scroll through your command history.
+**EXERCISE:** Use the commands we explored above to pull the image and then run it interactively. If you need reminders of the commands you've previously run, try using the **up and down arrow keys** at the terminal prompt to scroll through your command history.
 
 Once you do so successfully, you should see some scientific-sounding garbage text printed to the console, looking something like this:
 

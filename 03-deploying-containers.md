@@ -59,15 +59,15 @@ Once you're finished with that, open a VS Code terminal and logging in to Azure 
 
 `az login`
 
-This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal. You should see it list the Azure **subscriptions** you have access to (that is, the billing accounts paying for your cloud resources). In our case, the whole class falls under one subscription, called "Microsoft Azure Sponsorship 2" (labeled (1) in figure).
+This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal. You should see it list the Azure **subscriptions** you have access to (that is, the billing accounts paying for your cloud resources). In our case, the subscription we want to use is the one for this class, which is called "***** TODO *****", though in the screenshot below the only one visible is labeled 'Personal'.
 
 ![rg](img/subscriptions.png)
 
-We'll start by setting the CLI to use this subscription by default, so we don't have to specify it for every `az` command we run. Copy the value in the `id` field of this output (labeled (2) in figure)  and paste it into the following command, which you should run in your terminal:
+We'll start by setting the CLI to use this subscription by default, so we don't have to specify it for every `az` command we run. Copy the complete subscription name, labeled (1) in the figure, and paste it into the following command, being sure to surround it with double quotes (`"`). Run said command in your terminal:
 
-`az account set --subscription [SUBSCRIPTION ID]`
+`az account set --subscription "[SUBSCRIPTION NAME]"`
 
-Next, we'll tell the CLI what **resource group** to work within. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you'll create or use. You can find this information by opening the Azure sidebar (1) and looking under the Resource Groups box (2), though you may have to log in to Azure again through the sidebar to see it. Expand this class's subscription ("Microsoft Azure Sponsorship 2") and right-click the resource group created for you (3). Its name will take the form `rg-amlclass-[UW STUDENT ID]`. Select `View Properties` (4):
+Next, we'll tell the CLI what **resource group** to work within. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you'll create or use. You can find this information by opening the Azure sidebar (1) and looking under the Resource Groups box (2), though you may have to log in to Azure again through the sidebar to see it. Expand this class's subscription ("***** TODO *****") and right-click the resource group created for you (3). Its name will take the form `rg-amlclass-[UW STUDENT ID]`. Select `View Properties` (4):
 
 ![rg](img/rg.png)
 
@@ -89,7 +89,7 @@ The id of the resource group takes the following form:
 
 `/subscriptions/[SUBSCRIPTION ID]/resourceGroups/[GROUP NAME]`
 
-Note down both the group name from the "id" section of the configuration info in your VS code window (don't use the values in the above example). Then, set the resource group with the command:
+Note down both the group name and subscription id from the "id" section of the configuration info in your VS code window (don't use the values in the above example). Then, set the resource group with the command:
 
 `az configure --defaults group=[GROUP NAME] `
 
@@ -102,6 +102,8 @@ To confirm everything is working, try running the command:
 It should return all of the Azure services and objects currently in your resource group, including the Machine Learning workspace you'll be using later in the semester:
 
 ![ml](img/ml.png)
+
+**** TODO: CONFIRM ****
 
 #### Running containers in Azure
 
@@ -207,7 +209,7 @@ In addition to the above flags that mount a file share to our container, we also
 - `--command-line "[COMMAND HERE]"`
   This flag will replace the container entrypoint with whatever you specify in double-quotes. This is the equivalent of `--entrypoint` when using `docker run`.
 
-We'll mount the file share to the location `/output` in our container, and then save a file there called `text.pdf` by using then entrypoint "`python3 src/main.py --pdf /output/text.pdf`". The finished command line will look like this, replacing the `[ ]`-indicated blanks with their appropriate values.
+We'll mount the file share to the location `/output` in our container, and then save a file there called `text.pdf` by using then entrypoint "`python3 src/main.py --pdf /output/text.pdf`". The finished command line will look like this, replacing the `[ ]`-indicated blanks with their appropriate values. It's probably a good idea to copy this example command-line into a blank text file first, replace the `[ ]`-blanks, and then copy _that_ into your terminal:
 
 ```
 az container create \
@@ -216,9 +218,9 @@ az container create \
    --cpu 0.5 --memory 0.5 \
    --restart-policy Never --no-wait \
    --command-line "python3 src/main.py --pdf /output/text.pdf" \
-   --azure-file-volume-share-name [FILE SHARE NAME] \
    --azure-file-volume-account-name [STORAGE ACCOUNT NAME] \
    --azure-file-volume-account-key [STORAGE ACCOUNT KEY] \
+   --azure-file-volume-share-name [FILE SHARE NAME] \
    --azure-file-volume-mount-path /output 
 ```
 
