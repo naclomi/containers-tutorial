@@ -59,15 +59,15 @@ Once you're finished with that, open a VS Code terminal and logging in to Azure 
 
 `az login`
 
-This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal. You should see it list the Azure **subscriptions** you have access to (that is, the billing accounts paying for your cloud resources). In our case, the subscription we want to use is the one for this class, which is called "***** TODO *****", though in the screenshot below the only one visible is labeled 'Personal'.
+This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal. You should see it list the Azure **subscriptions** you have access to (that is, the billing accounts paying for your cloud resources). In our case, the subscription we want to use is the one for this class, which is called "MSE544 Big Data and Informatics Luna Huang", though in the screenshot below the only one visible is labeled 'Personal'.
 
 ![rg](img/subscriptions.png)
 
-We'll start by setting the CLI to use this subscription by default, so we don't have to specify it for every `az` command we run. Copy the complete subscription name, labeled (1) in the figure, and paste it into the following command, being sure to surround it with double quotes (`"`). Run said command in your terminal:
+We'll start by setting the CLI to use this subscription by default, so we don't have to specify it for every `az` command we run. Run this command in your terminal:
 
-`az account set --subscription "[SUBSCRIPTION NAME]"`
+`az account set --subscription "MSE544 Big Data and Informatics Luna Huang"`
 
-Next, we'll tell the CLI what **resource group** to work within. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you'll create or use. You can find this information by opening the Azure sidebar (1) and looking under the Resource Groups box (2), though you may have to log in to Azure again through the sidebar to see it. Expand this class's subscription ("***** TODO *****") and right-click the resource group created for you (3). Its name will take the form `rg-amlclass-[UW STUDENT ID]`. Select `View Properties` (4):
+Next, we'll tell the CLI what **resource group** to work within. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you'll create or use. You can find this information by opening the Azure sidebar (1) and looking under the Resource Groups box (2), though you may have to log in to Azure again through the sidebar to see it. Expand this class's subscription ("MSE544 Big Data and Informatics Luna Huang") and right-click the resource group created for you (3). Its name will take the form `rg-amlclass-[UW STUDENT ID]`. Select `View Properties` (4):
 
 ![rg](img/rg.png)
 
@@ -102,8 +102,6 @@ To confirm everything is working, try running the command:
 It should return all of the Azure services and objects currently in your resource group, including the Machine Learning workspace you'll be using later in the semester:
 
 ![ml](img/ml.png)
-
-**** TODO: CONFIRM ****
 
 #### Running containers in Azure
 
