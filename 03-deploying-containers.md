@@ -207,7 +207,11 @@ In addition to the above flags that mount a file share to our container, we also
 - `--command-line "[COMMAND HERE]"`
   This flag will replace the container entrypoint with whatever you specify in double-quotes. This is the equivalent of `--entrypoint` when using `docker run`.
 
-We'll mount the file share to the location `/output` in our container, and then save a file there called `text.pdf` by using then entrypoint "`python3 src/main.py --pdf /output/text.pdf`". The finished command line will look like this, replacing the `[ ]`-indicated blanks with their appropriate values. It's probably a good idea to copy this example command-line into a blank text file first, replace the `[ ]`-blanks, and then copy _that_ into your terminal:
+We'll mount the file share to the location `/output` in our container, and then save a file there called `text.pdf` by using then entrypoint "`python3 src/main.py --pdf /output/text.pdf`".
+
+Copy and execute the command line below, replacing the `[ ]`-indicated blanks with their appropriate values. It's probably a good idea to first copy this content into a blank text file, replace the `[ ]`-blanks, and then copy _that_ into your terminal.
+
+If you're on MacOS, Linux, or WSL, the command looks like:
 
 ```
 az container create \
@@ -219,6 +223,22 @@ az container create \
    --azure-file-volume-account-name [STORAGE ACCOUNT NAME] \
    --azure-file-volume-account-key [STORAGE ACCOUNT KEY] \
    --azure-file-volume-share-name [FILE SHARE NAME] \
+   --azure-file-volume-mount-path /output 
+```
+
+If you're on Windows PowerShell (your command line starts with the letters "PS"), the command looks the same as above but with backticks at the end of the line instead of slashes:
+
+
+```
+az container create `
+   --name my-cloud-textbook `
+   --image naclomi/textbook-writer `
+   --cpu 0.5 --memory 0.5 `
+   --restart-policy Never --no-wait `
+   --command-line "python3 src/main.py --pdf /output/text.pdf" `
+   --azure-file-volume-account-name [STORAGE ACCOUNT NAME] `
+   --azure-file-volume-account-key [STORAGE ACCOUNT KEY] `
+   --azure-file-volume-share-name [FILE SHARE NAME] `
    --azure-file-volume-mount-path /output 
 ```
 
