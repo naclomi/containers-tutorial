@@ -159,7 +159,7 @@ where `[host_path]` is the directory on your computer to mount, and `[container_
 
 For our textbook writer, we can mount the current directory the terminal is sitting in to the container path `/output` with this command line (1):
 
-`docker run -v ${PWD}:/output naclomi/textbook-writer --pdf /output/textbook.pdf` 
+`docker run -v "${PWD}:/output" naclomi/textbook-writer --pdf /output/textbook.pdf` 
 
 ![pdf_output](img/pdf_output.png)
 
