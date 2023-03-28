@@ -29,20 +29,25 @@ Save the file with `File menu -> Save` or `Ctrl+S` and name it `Dockerfile`. At 
 
 ![first](img/first.png)
 
+Note that VSCode might have messed with the filename you entered, and done something like tack '.dockerfile' onto the end of the filename. If this is the case, (1) right-click the file you just saved and (2) select `Rename...`, then make sure the filename is just `Dockerfile`, no more or less:
+
+![rename](img/rename.png)
+
 Now open a terminal (`Terminal menu -> New Terminal`) and run the command:
 
 `docker build -t [DOCKERHUB-USERNAME]/hello-world .`
 
 replacing `[DOCKERHUB-USERNAME]` with the username you used to sign up for Dockerhub. Make sure to include the period `.` at the end of the command :) !
 
-The first time you run this command might take a few minutes to download all of the files required to build the container (it'll go faster next time!). Once it's done you should see output that ends with a message like this:
+The first time you run this command might take a few minutes to download all of the files required to build the container (it'll go faster next time!). Once it's done, it may output a variety of different success messages depending on your operating system. Ultimately, though, you shouldn't see the word 'fail' or 'no' anywhere in the output. One other way to check if the previous command succeeded is to run this subsequent "check" command:
 
 ```
-Successfully built 7856838c829b
-Successfully tagged naclomi/hello-world:latest
+echo $?
 ```
 
-Now, we can run our container either from the Docker sidebar or with the following terminal command:
+If the previous command succeeded, you'll see `0` or `True` outputted to the screen. If it failed, you'll see some other number, or the word `False`.
+
+Once we run the above build command successfully, we can run our container either from the Docker sidebar or with the following terminal command:
 
 ```
 docker run --rm [DOCKERHUB-USERNAME]/hello-world 
