@@ -104,28 +104,52 @@ ENTRYPOINT echo Hello World
 
 ```
 
-Save the file and re-run the `docker build` command from the previous exercise (recall you can use the up arrow key in the terminal to retrieve previous terminal commands you've run). In general, you need to run `docker build` every time you modify the Dockerfile for your changes to actually take effect.
+Save the file and re-build the docker container with this command:
+
+```
+docker build --no-cache --progress plain -t [DOCKERHUB-USERNAME]/hello-world . 
+```
+ 
+In general, you need to run `docker build` every time you modify the Dockerfile for your changes to actually take effect.
 
 Once it's built, re-run the container with `docker run`.
 
 Let's look at the output for all of this:
 
 ```
-user@debian:~/hello-world$ docker build -t naclomi/hello-world .
-Sending build context to Docker daemon  2.048kB
-Step 1/3 : FROM python:3.6-stretch
- ---> d8e3ac20e6dd
-Step 2/3 : RUN echo Hello Galaxy
- ---> Running in 83cf57ff4447
-Hello Galaxy
-Removing intermediate container 83cf57ff4447
- ---> c1c2c5086c1f
-Step 3/3 : ENTRYPOINT echo Hello World
- ---> Running in b6fb35bc5148
-Removing intermediate container b6fb35bc5148
- ---> 26a6f4c65850
-Successfully built 26a6f4c65850
-Successfully tagged naclomi/hello-world:latest
+user@debian:~/hello-world$ docker build --no-cache --progress plain -t naclomi/hello-world .
+
+#1 [internal] load build definition from Dockerfile
+#1 sha256:703570748eba561ebf9bf7ed57fac1464db2eba2b487df882eccdae2488cfd20
+#1 transferring dockerfile: 155B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 sha256:139fcf13ae9a8f8b9cf2374f6ad9a811f9d7a2c573f4cf870a18cd1cbdb711d9
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.6-stretch
+#3 sha256:7cb3ce616859dfaaede09c8af55110806d0d186b2719d544c5463328c00bc1d9
+#3 DONE 0.4s
+
+#4 [1/2] FROM docker.io/library/python:3.6-stretch@sha256:654dd3f75f34c7075c118de1d7733613983140ab63bebdd2a5857e50b300924b
+#4 sha256:a26bfb5fba3b2d8328b71b8c4c44aa04820538404263c11cf0070c63075488e6
+#4 CACHED
+
+#5 [2/2] RUN echo Hello Galaxy
+#5 sha256:6fb84a7377ec14432e78276c23e72067ece30f8c215297d2f1e7a81d42a19954
+#5 0.315 Hello Galaxy
+#5 DONE 0.3s
+
+#6 exporting to image
+#6 sha256:e8c613e07b0b7ff33893b694f7759a10d42e180f2b4dc349fb57dc6b71dcab00
+#6 exporting layers 0.0s done
+#6 writing image sha256:36732b523b173113f1f57b81e2c46fd0fd6115b24061c929081f60ed76057c9f
+#6 writing image sha256:36732b523b173113f1f57b81e2c46fd0fd6115b24061c929081f60ed76057c9f done
+#6 naming to docker.io/naclomi/hello-world done
+#6 DONE 0.0s
+
 user@debian:~/hello-world$ docker run naclomi/hello-world 
 Hello World
 user@debian:~/hello-world$ 
