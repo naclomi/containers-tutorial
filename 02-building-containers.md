@@ -217,12 +217,12 @@ We've got a few new commands going on here. Let's take a closer look at them:
 
 So, our script sets the container's working directory to `/usr/src/textbook-writer`, copies the source and data directories we just unzipped into it, and then sets the entrypoint to be the python script we just `COPY`ed in.
 
-Ohkay! Build and run the container!
+Ohkay! Build the container, calling it `[DOCKERHUB-USERNAME]/my-textbook` (replacing the `[]` part with your username), and then run container!
 
 And if all goes well, you should get.........
 
 ```
-user@debian:~/my-textbook$ docker run --rm naclomi/my-textbook
+user@debian:~/my-textbook$ docker run --rm [DOCKERHUB-USERNAME]/my-textbook
 Traceback (most recent call last):
   File "./src/main.py", line 4, in <module>
     import markovify
@@ -266,7 +266,7 @@ Now rebuild the image and rerun the container. You should get some quality garba
 Hooray! But what if we want only one sentence of output? We can just pass it as a command line argument, right?
 
 ```
-docker run --rm naclomi/my-textbook --sentences 1
+docker run --rm [DOCKERHUB-USERNAME]/my-textbook --sentences 1
 ```
 
 ![too_many_cooks](img/too_many_cooks.png)
