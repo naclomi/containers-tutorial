@@ -14,7 +14,7 @@ In this tutorial series we are going to learn how to:
 
 This tutorial series makes extensive use of VS Code, Docker, VS Code's Azure and Docker extensions, and the Azure CLI. It assumes you have these installed on your system before proceeding. On Windows, it also assumes you have WSL2 installed, which is a requirement for Docker. For instructions on how to install each, please see:
 
-- [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (only needed on Windows)
+- [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) (only needed on Windows)
 - [VS Code](https://code.visualstudio.com/Download)
 - [VS Code Azure plugin set](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack) (includes Docker plugin)
 - [Docker](https://docs.docker.com/desktop/)
@@ -69,10 +69,10 @@ After you have Docker installed, sign up for an account on Docker Hub:
 - Markov text generator trained on portions of *Mechanics of Materials*, Wiley ISBN 0-471-59399-0, retrieved from https://ocw.mit.edu/courses/materials-science-and-engineering/3-11-mechanics-of-materials-fall-1999/modules/ on March 5th, 2021
 
 - For a full reference of `Dockerfile` commands, refer to:
-  https://docs.docker.com/engine/reference/builder/
+  [https://docs.docker.com/engine/reference/builder/](https://docs.docker.com/engine/reference/builder/)
 
 - For a full reference of the `az container` set of CLI commands, refer to:
-  https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest
+  [https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest](https://docs.microsoft.com/en-us/cli/azure/container?view=azure-cli-latest)
 
 ## TODOs
 
