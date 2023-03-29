@@ -39,7 +39,13 @@ Your image is now on the web! You can see and alter information about it from yo
 
 ![docker_web_dash](img/docker_web_dash.png)
 
-Have a friend try to pull it down to their computer and run it :) .
+At this point, others can run your image on their computers using the same `docker run` commands we've practiced before:
+
+```
+docker run --rm [YOUR-DOCKERHUB-USERNAME]/my-textbook
+```
+
+Have a friend try it out on their computer :) .
 
 #### Containers in the cloud
 
@@ -59,15 +65,31 @@ Once you're finished with that, open a VS Code terminal and logging in to Azure 
 
 `az login`
 
-This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal. You should see it list the Azure **subscriptions** you have access to (that is, the billing accounts paying for your cloud resources). In our case, the subscription we want to use is the one for this class, which is called "MSE544 Big Data and Informatics Luna Huang", though in the screenshot below the only one visible is labeled 'Personal'.
+This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal. You should see it list the Azure **subscriptions** you have access to (that is, the billing accounts paying for your cloud resources). In our case, the subscription we want to use is the one for this class, which will have "MSE544" in the title, though in the screenshot below the only one visible is labeled 'Personal'.
 
 ![rg](img/subscriptions.png)
 
-We'll start by setting the CLI to use this subscription by default, so we don't have to specify it for every `az` command we run. Run this command in your terminal:
+We'll start by setting the CLI to use this subscription by default, so we don't have to specify it for every `az` command we run. Run this command in your terminal, replacing `[SUBSCRIPTION-NAME]` with the complete name of this class's subcription (the one that includes the text `MSE544`):
 
-`az account set --subscription "MSE544 Big Data and Informatics Luna Huang"`
+`az account set --subscription "[SUBSCRIPTION-NAME]"`
 
-Next, we'll tell the CLI what **resource group** to work within. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you'll create or use. You can find this information by opening the Azure sidebar (1) and looking under the Resource Groups box (2), though you may have to log in to Azure again through the sidebar to see it. Expand this class's subscription ("MSE544 Big Data and Informatics Luna Huang") and right-click the resource group created for you (3). Its name will take the form `rg-amlclass-[UW STUDENT ID]`. Select `View Properties` (4):
+Next, we'll tell the CLI what **resource group** to work within. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you'll create or use. You can find this information by opening the Azure sidebar in VSCode. Start by clicking the Azure icon (1) and then signing in again (2) .
+
+![logging in](img/az_gui_login.png)
+
+Next, we'll ask the Azure toolbar to show us the resource groups we have access to. Click the tiny `Group By` icon (labelled (1) in the figure below) and select `Group by Resource Group` (2).
+
+![logging in](img/az_gui_groupby.png)
+
+We also need to change some Azure settings for later. Open VS Code's settings page by (1) opening the `File` menu, (2) opening `Preferences` and (3) clicking `Settings`:
+
+![settings](img/vscode_open_settings.png)
+
+Paste `azureResourceGroups.showHiddenTypes` into the search box at the top of the settings page (1), and then check the box on the setting that appears in the subsequent search results (2):
+
+![settings](img/vscode_az_rg_show.png)
+
+Ok! Finally! In the Azure sidebar on the left, expand the subcription with `MSE544` in the title (1) right-click the resource group created for you (2). Its name will take the form `rg-amlclass-[UW STUDENT ID]`. Select `View Properties` (3):
 
 ![rg](img/rg.png)
 
@@ -75,8 +97,8 @@ Once you click `View Properties`, a bunch of configuration information should op
 
 ```json
 {
-    "id": "/subscriptions/ab12345c-def6-7890-gh12-345678i90jkl/resourceGroups/ContainerTutorial-NaomiAlterman",
-    "name": "ContainerTutorial-NaomiAlterman",
+    "id": "/subscriptions/ab12345c-def6-7890-gh12-345678i90jkl/resourceGroups/rg-amlclass-naomila",
+    "name": "rg-amlclass-naomila",
     "type": "Microsoft.Resources/resourceGroups",
     "properties": {
         "provisioningState": "Succeeded"
@@ -99,9 +121,8 @@ To confirm everything is working, try running the command:
 
 `az resource list`.
 
-It should return all of the Azure services and objects currently in your resource group, including the Machine Learning workspace you'll be using later in the semester:
+If your CLI is configured properly, this command will return all of the Azure services and objects currently in your resource group (which you can also inspect through that graphical sidebar we've been messing with).
 
-![ml](img/ml.png)
 
 #### Running containers in Azure
 
@@ -118,9 +139,9 @@ There's a lot going on here. Let's step through it:
 * The `--restart-policy Never` flag tells Azure that after our container finishes running, it should just be left in a stopped state. **This is important**, because without it **the container would get re-run in a loop indefinitely**, until we manually stopped it, and this could use up a lot of resources (eg, $$$). The default behavior is useful when a container runs an always-available service like a web server, but for our purposes is really really not what we want.
 * The `--no-wait` flag tells the terminal to not hang and wait until the container is set up. Deployment can take a while, since Azure has to find an unused computer in the cloud and download our image to it, so this will let us do other terminal operations while that all is happening.
 
-We'll master all of those options, the more we use Azure. For now,  just copy and paste the command with the appropriate values replacing the blanks denoted by `[]`s.
+We'll master all of those options, the more we use Azure. For now, just copy and paste the command with the appropriate values replacing the blanks denoted by `[]`s. It might help to copy it into a text editor first, fill in the `[]`-blanks there, and then copy _that_ to your termainal.
 
-To confirm that your container was created, click the little refresh icon in the `RESOURCE GROUPS` box of the Azure sidebar and expand your resource group. You should see the name of your container show up there:
+To confirm that your container was created, click the little refresh icon at the top of the Azure sidebar (1) and expand your resource group. You should see the name of your container show up there (2) :
 
 ![new_container](img/new_container.png)
 
