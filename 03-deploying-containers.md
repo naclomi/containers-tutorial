@@ -183,7 +183,7 @@ Let's start by creating a file store for the container output. It's a little con
 
 Yikes, right? Anyway, we need to create a new storage account, and then within that create a file share. Then, when we start our Docker container, we can point it towards that file share and it put stuff in it.
 
-Start by opening the Azure sidebar in VS Code and expanding the `STORAGE` section. Then, click the + button to create a new storage account.
+Start by opening the Azure sidebar in VS Code, clicking the + button at the top (1), and typing "Storage Account" into the box that pops up to create a new storage account (2):
 
 ![storage_1](img/storage_1.png)
 
@@ -191,8 +191,17 @@ VS Code will then ask you for a few details:
 
 - What subscription to create the account within. Select the subscription for this class.
 - A unique name for the account This name can only contain letters and numbers, and has to be unique across all of Azure (how dramatic!). You can choose whatever you want, but to make it easier to find a name that isn't taken it helps to prefix it with your own username.
+- A location to put the storage in. It doesn't ultimately matter, but for now select `Central US`.
 
-After this, VS Code will spin a bit waiting for Azure to finish creating your storage account. Once it's done, it'll appear under the class subscription in the `STORAGE` area. Expand the account, right-click `File Shares`, and select `Create File Share...`
+VS Code _may_ complain that you don't have permission to create a resource group. This is fine, just click 'Select existing' and then choose your class-created resource group from the list that pops up (the one that has your username in it):
+
+![storage_1](img/storage_complaint.png)
+
+After all of this this, VS Code will spin a bit waiting for Azure to finish creating your storage account. Once it's done, you'll see a little green checkbox in the status window at the bottom of your screen:
+
+![storage_1](img/storage_success.png)
+
+In the Azure sidebar, refresh the list of resources (1), expand the new storage account you just created (2), right-click `File Shares`, and select `Create File Share...` (3):
 
 ![new_share](img/new_share.png)
 
@@ -267,7 +276,7 @@ Oof, it's complicated, but it's powerful. Good job command line warrior. Run it,
 
 `az container show --name my-cloud-textbook`
 
-Once it's all done, click the refresh icon in the `STORAGE` box, and expand the file share by clicking the arrow next to it. You should see our pdf sitting there! Right click it, and select `Download`:
+Once it's all done, click the refresh icon in the Azure bar (1), and expand the file share by clicking the arrow next to it (2). You should see our pdf sitting there! Right click it, and select `Download` (3):
 
 ![download](img/download.png)
 
