@@ -163,11 +163,17 @@ This outputs a lot of detailed information about the container, including when i
 
 ![cloud_progress](img/cloud_progress.png)
 
-At this point, you can re-run your container with the command:
 
-`az container start --name my-cloud-textbook --no-wait`
+If you _don't_ see this information when running the above command, and you're on a recent Apple laptop, you may need to rebuild your docker container with a few extra options enabled. Run these two commands, with `[YOUR DOCKERHUB USERNAME]` replaced appropriately:
 
-And once you're done, delete the container with the command:
+```
+docker buildx create --name mybuilder --driver docker-container --bootstrap --use
+docker buildx build -t [YOUR DOCKERHUB USERNAME]/my-textbook:latest -f Dockerfile --push --platform=linux/arm64,linux/amd64 .
+```
+
+At this point, you can restart the process from the `az container create` step and things should be working.
+
+Regardless of the above, once you're done, delete the container with the command:
 
 `az container delete --name my-cloud-textbook`
 
