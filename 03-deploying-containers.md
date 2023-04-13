@@ -141,6 +141,8 @@ There's a lot going on here. Let's step through it:
 
 We'll master all of those options, the more we use Azure. For now, just copy and paste the command with the appropriate values replacing the blanks denoted by `[]`s. It might help to copy it into a text editor first, fill in the `[]`-blanks there, and then copy _that_ to your termainal.
 
+If you get an error called `InaccessibleImage` from the above command, try replacing the `[DOCKER IMAGE NAME]` with `naclomi/my-textbook`, instead of the image you created. This error is related to the added complexity of building Docker containers compatible with Apple computers, and can be circumvented with some tricks that are unfortunately outside the scope of what we have time for here.
+
 To confirm that your container was created, click the little refresh icon at the top of the Azure sidebar (1) and expand your resource group. You should see the name of your container show up there (2) :
 
 ![new_container](img/new_container.png)
