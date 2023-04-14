@@ -141,8 +141,6 @@ There's a lot going on here. Let's step through it:
 
 We'll master all of those options, the more we use Azure. For now, just copy and paste the command with the appropriate values replacing the blanks denoted by `[]`s. It might help to copy it into a text editor first, fill in the `[]`-blanks there, and then copy _that_ to your termainal.
 
-If you get an error called `InaccessibleImage` from the above command, try replacing the `[DOCKER IMAGE NAME]` with `naclomi/my-textbook`, instead of the image you created. This error is related to the added complexity of building Docker containers compatible with Apple computers, and can be circumvented with some tricks that are unfortunately outside the scope of what we have time for here.
-
 To confirm that your container was created, click the little refresh icon at the top of the Azure sidebar (1) and expand your resource group. You should see the name of your container show up there (2) :
 
 ![new_container](img/new_container.png)
@@ -173,7 +171,7 @@ docker buildx create --name mybuilder --driver docker-container --bootstrap --us
 docker buildx build -t [YOUR DOCKERHUB USERNAME]/my-textbook:latest -f Dockerfile --push --platform=linux/arm64,linux/amd64 .
 ```
 
-At this point, you can restart the process from the `az container create` step and things should be working.
+At this point, you can restart the process from the `az container create` step and things should be working. At this point, it's possible things _still_ won't work: if you get an error called `InaccessibleImage` from the above command, try replacing the `[DOCKER IMAGE NAME]` with `naclomi/textbook-writer-cloudref`, instead of the image you created. This error is related to the added complexity of building Docker containers compatible with Apple computers, and can be circumvented with some further tricks that are unfortunately outside the scope of what we have time for here.
 
 Regardless of the above, once you're done, delete the container with the command:
 
@@ -261,7 +259,7 @@ az container create \
    --azure-file-volume-account-name [STORAGE ACCOUNT NAME] \
    --azure-file-volume-account-key [STORAGE ACCOUNT KEY] \
    --azure-file-volume-share-name [FILE SHARE NAME] \
-   --azure-file-volume-mount-path /output 
+   --azure-file-volume-mount-path output 
 ```
 
 If you're on Windows PowerShell (your command line starts with the letters "PS"), the command looks the same as above but with backticks at the end of the line instead of slashes:
@@ -277,7 +275,7 @@ az container create `
    --azure-file-volume-account-name [STORAGE ACCOUNT NAME] `
    --azure-file-volume-account-key [STORAGE ACCOUNT KEY] `
    --azure-file-volume-share-name [FILE SHARE NAME] `
-   --azure-file-volume-mount-path /output 
+   --azure-file-volume-mount-path output 
 ```
 
 Oof, it's complicated, but it's powerful. Good job command line warrior. Run it, and then wait a minute or two for Azure to complete its work. As before, you can check the status of the container with the command:
