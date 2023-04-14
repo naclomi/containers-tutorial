@@ -171,7 +171,9 @@ docker buildx create --name mybuilder --driver docker-container --bootstrap --us
 docker buildx build -t [YOUR DOCKERHUB USERNAME]/my-textbook:latest -f Dockerfile --push --platform=linux/arm64,linux/amd64 .
 ```
 
-At this point, you can restart the process from the `az container create` step and things should be working. At this point, it's possible things _still_ won't work: if you get an error called `InaccessibleImage` from the above command, try replacing the `[DOCKER IMAGE NAME]` with `naclomi/textbook-writer-cloudref`, instead of the image you created. This error is related to the added complexity of building Docker containers compatible with Apple computers, and can be circumvented with some further tricks that are unfortunately outside the scope of what we have time for here.
+At this point, you can restart the process from the `az container create` step and things should be working.
+
+If `az container create` still fails, giving you an error with the text `InaccessibleImage`, you can just use the reference image built for this tutorial titled `naclomi/textbook-writer-cloudref` (instead of the image you created). This error is related to the added complexity of building Docker containers compatible with Apple computers, and can be circumvented with some further tricks that are unfortunately outside the scope of what we have time for here.
 
 Regardless of the above, once you're done, delete the container with the command:
 
