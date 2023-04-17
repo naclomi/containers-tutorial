@@ -175,11 +175,11 @@ At this point, you can restart the process from the `az container create` step a
 
 If `az container create` still fails, giving you an error with the text `InaccessibleImage`, you can just use the reference image built for this tutorial titled `naclomi/textbook-writer-cloudref` (instead of the image you created). This error is related to the added complexity of building Docker containers compatible with Apple computers, and can be circumvented with some further tricks that are unfortunately outside the scope of what we have time for here.
 
-Regardless of the above, once you're done, delete the container with the command:
+Regardless of the above, once you're done, you can delete the container with the command:
 
 `az container delete --name my-cloud-textbook`
 
-**Make sure to delete the container once you're done here**, to make sure you don't leave resources in the cloud that may use up funds.
+In general you want to delete cloud resources like this as soon as you're done with them, to ensure they don't use up funds. That said, if this container is going to be reviewed as a part of your class grade **you should wait to delete it until your TA has looked it over**.
 
 #### Using cloud file stores for Azure container input/output
 
@@ -296,4 +296,4 @@ Congratulations -- this was a lot of steps for some pretty advanced computing, a
 
 Now that the file share is created, you can rerun the container with `az container start` or create new ones that connect to the share with `az container create` as much as you like. The steps preceding the `az container create` command only have to be done once.
 
-Remember to delete all of the resources you used from Azure once you're done, using the `az container delete` command for the containers and by right-clicking the storage account and selecting `Delete Storage Account...`.
+Wait until your course staff have recorded that you've successfully run the tutorial, and then delete the completed work using the `az container delete` command for the containers and by right-clicking the storage account and selecting `Delete Storage Account...`.
