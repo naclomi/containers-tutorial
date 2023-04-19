@@ -81,7 +81,7 @@ Next, we'll ask the Azure toolbar to show us the resource groups we have access 
 
 ![logging in](img/az_gui_groupby.png)
 
-We also need to change some Azure settings for later. Open VS Code's settings page by (1) opening the `File` menu, (2) opening `Preferences` and (3) clicking `Settings`:
+We also need to change some Azure settings for later. Open VS Code's settings page by (1) opening the `File` menu (or the `Code` menu on MacOS), (2) opening `Preferences` and (3) clicking `Settings`:
 
 ![settings](img/vscode_open_settings.png)
 
