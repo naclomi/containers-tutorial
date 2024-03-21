@@ -2,15 +2,71 @@
 draft: false
 title: "Part 1: Running containers"
 ---
-## Pulling our first image
+## Getting started
 
-First things first, let's open a **terminal** in VS Code that we'll issue Docker CLI commands from.
+### Opening a remote window
 
-Select `Terminal -> New Terminal`
+First things first, let's open VSCode and start a remote connection to our Linux cloud workstation (make sure it's turned on first). Start by clicking the blue `><` button in the corner:
+
+![](../img/vs-remote-1.png)
+
+From the menu that opens up, choose the option that mentions SSH:
+
+![](../img/vs-remote-2.png)
+
+And finally, select the VM that you've previously configured.
+
+### Installing Docker
+
+The process for installing Docker varies across operating systems. Since our VM is running Ubuntu Linux, we'll follow the official guide's [Linux instructions](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
+
+Start by opening a new terminal usin the terminal menu (`Terminal -> New Terminal`):
 
 ![new_terminal](../img/new_terminal.png)
 
-Now, in the terminal that pops up in the bottom of our VS Code window, enter the following command:
+
+In the terminal, we'll tell Linux where to find the Docker software we want to install. Run these commands:
+
+```bash
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+```
+
+Now, actually install Docker with this command:
+
+```bash
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Set up user permissions for running Docker with these commands:
+```bash
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+And finally, test that Docker was installed with this command:
+```bash
+docker --version
+```
+
+You should see some numbers get printed to the terminal, like this:
+
+![](../img/docker-version.png)
+
+## Pulling our first image
+
+Now that everything has been set up, let's run a container! Run the following command:
 
 ```bash
 docker pull hello-world
@@ -20,27 +76,30 @@ docker pull hello-world
 
 The **pull** command has the syntax `docker pull [IMAGE NAME]` and downloads the specified image hosted on Docker Hub to your computer. In this case, we're pulling a very simple container image that will print a Hello World message to our terminal when we run it.
 
-We should now see `hello-world` in the list of docker images installed on our system. We can see all of the images we have installed by clicking the Docker icon on the left-side of the VS Code window (1) and then inspecting the list in the `IMAGES` accordion box. See how the image we just pulled appears there (2):
+We can see all of the images downloaded to the computer with the command:
 
-![image_list](../img/image_list.png)
+```bash
+docker image list
+```
 
-If we click the arrow to the left of the image name to expand it, we'll see a **version list**. If we download multiple versions of the container (like multiple editions of a book), they will all be listed here, but for now we only have the **latest** version:
+![](../img/cli-image-list.png)
 
-![versions](../img/versions.png)
+## Running our first container
 
-## Running our first container, through VS Code
+Anyway, now that we've downloaded `hello-world`, let's run it. Try the following command in the terminal:
 
-Anyway, now that we've downloaded `hello-world`, let's run it. One way to do so is by right-clicking an image version in the `IMAGES` list  and selecting `Run interactive`:
+```bash
+docker run --rm -it  hello-world
+```
 
-![run_int](../img/run_int.png)
+We'll see the output of the container appear in the terminal:
 
-We'll see the results of the run appear in the terminal part of the window:
-
-![hello_world_result](../img/hello_world_result.png)
+![run](../img/run.png)
 
 Congratulations, you just ran your first container!
 
-**So, what just happened?**
+{{% aside %}}
+**🤔 So, what just happened? 🤔**
 
 If containers are like little VMs, what happened to this one? Does it still exist? How did it print this text? Is it bored? Is it lonely?
 
@@ -48,13 +107,9 @@ When we **run** a container, the contents of the image are copied from disk into
 
 After the entrypoint command completes, the container is **shut down** and its memory is freed. This means that all of the **changes to container files get wiped**; every time we run the container, it starts again from same the pristine state the image specifies.
 
-## Running our first container, through the CLI
+{{% /aside %}}
 
-Notice that when we ran the container, the output started with the message: 
-
-`> Executing task: docker run --rm -it  hello-world:latest <`
-
-This is actually displaying the CLI command that we could enter into the terminal to run the container. It's really nice that the graphical interface tells us its equivalent CLI commands like this!
+### The `docker run` command in more detail
 
 The docker **run** command takes this form:
 
@@ -62,29 +117,22 @@ The docker **run** command takes this form:
 docker run [flags] [image name]:[image version]
 ```
 
-As we saw earlier, the image name is `hello-world`, and the version we downloaded was `latest` (this is the default version name, and if we didn't specify a version `latest` would be implied).
+As we saw when "pulling", the image name is `hello-world`, and the version we downloaded was `latest` (this is the default version name, and if we didn't specify a version `latest` would be implied).
 
 The `--rm` flag tells docker to delete the leftover contents of the container once it finishes running. Note that this doesn't delete the image -- it deletes the container we just ran, which was reconstituted from the image.
 
 The `-it` flags tell docker to run the container interactively -- that is, use the terminal to print output and take input from us. Omitting this flag would run the container in the background without giving us an opportunity to prod it from the terminal. This is useful for containers that run web servers or train machine learning models, applications that might take a long time and not need user interactivity (at least, not interactivity through the terminal)
 
-Let's try running the container again through the terminal. As the message says, press any key in the terminal to return to an interactive prompt. Now run the command:
-
-```bash
-docker run --rm -it  hello-world
-```
-
-We should see the same output as before:
-
-![run](../img/run.png)
-
-Using the GUI to run containers is fast and easy, but using the CLI will give us some much-needed flexibility later on.
 
 ## Trying out a more interesting container
 
 Now that we've gotten our sea legs, let's try running a container that does something more interesting. The `naclomi/textbook-writer` image contains a python script that uses rudimentary AI techniques to write machine-generated nonsense paragraphs for a materials science textbook. Here's a link to the container's page on Docker Hub:
 
-[https://hub.docker.com/r/naclomi/textbook-writer](https://hub.docker.com/r/naclomi/textbook-writer)
+{{% aside %}}
+🔗[https://hub.docker.com/r/naclomi/textbook-writer](https://hub.docker.com/r/naclomi/textbook-writer)
+{{% /aside %}}
+
+.
 
 {{% aside %}}
 
@@ -190,6 +238,26 @@ docker run -v "${PWD}:/output" naclomi/textbook-writer --pdf /output/textbook.pd
 
 ![pdf_output](../img/pdf_output.png)
 
-Then, if we look at the contents of the current directory (2), we'll see that the container saved the pdf to our working directory :D ! Let's open it up!![pdf_yay](../img/pdf_yay.png)
+Now if we look at the contents of the directory with the `ls` command, we'll see the PDF file:
+
+```bash
+ls
+```
+
+![](../img/vs-pdf-ls.png)
+
+We can also open a graphical file browser with the command:
+
+```bash
+code -r .
+```
+
+From here, if we right-click the PDF file and select `Download`, we'll be able to save the file to our personal computer from the cloud:
+
+![](../img/vs-pdf-download.png)
+
+After doing that, try opening it up!
+
+![pdf_yay](../img/pdf_yay.png)
 
 Still just as incomprehensible as ever ;) .

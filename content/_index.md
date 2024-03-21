@@ -17,18 +17,14 @@ In this tutorial series we are going to learn how to:
 
 ### Requirements and expectations
 
-This tutorial series makes extensive use of VS Code, Docker, VS Code's Azure and Docker extensions, and the Azure CLI. It assumes you have these installed on your system before proceeding. On Windows, it also assumes you have WSL2 installed, which is a requirement for Docker. For instructions on how to install each, please see:
+TODO: talk about workstation vm, how doing this on your own computer is easy but discussed in an appendix b/c of different OSes
 
-- [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) (only needed on Windows)
-- [VS Code](https://code.visualstudio.com/Download)
-- [VS Code Azure plugin set](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack) (includes Docker plugin)
-- [Docker](https://docs.docker.com/desktop/)
-- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+
+VSCode, remote VM
 
 The tutorial content makes light use of shell scripting and Python. It does not expect you to write any such scripts on your own, but it will help to have a passing familiarity with them.
 
-Parts 1 and 2 all run locally but will require a free Docker Hub account, which you can register for [here](https://hub.docker.com/signup)
-
+Create a free Docker Hub account, which you can register for [here](https://hub.docker.com/signup)
 
 Part 3 walks through cloud deployment, for which you will need Microsoft Azure login credentials.
 
@@ -66,6 +62,9 @@ After you have Docker installed, sign up for an account on Docker Hub:
 ### [Part 2: Building Containers](02-building-containers)
 
 ### [Part 3: Deploying Containers](03-deploying-containers)
+
+TODO:
+### [Appendix: Installing Docker on your personal computer](0a-local-installs)
 
 ## Notes and References
 
