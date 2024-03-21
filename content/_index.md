@@ -1,3 +1,8 @@
+---
+draft: false
+title: "Containerization Tutorial"
+---
+
 # Containerization Tutorial
 
 ## What are we doing here?
@@ -56,11 +61,11 @@ After you have Docker installed, sign up for an account on Docker Hub:
 
 ## Tutorial Modules
 
-### [Part 1: Running Containers](01-running-containers.md)
+### [Part 1: Running Containers](01-running-containers)
 
-### [Part 2: Building Containers](02-building-containers.md)
+### [Part 2: Building Containers](02-building-containers)
 
-### [Part 3: Deploying Containers](03-deploying-containers.md)
+### [Part 3: Deploying Containers](03-deploying-containers)
 
 ## Notes and References
 

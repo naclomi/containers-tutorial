@@ -1,0 +1,17 @@
+baseURL: https://naclomi.github.io/containers-tutorial/
+languageCode: en-us
+title: Containers and Docker on Azure
+theme: "tutelage"
+
+params:
+  lineNoMinThreshold: 4
+markup:
+  tableOfContents:
+    startLevel: 0
+    # endLevel: 5
+  highlight:
+    lineNos: true
+    anchorLineNos: true
+  goldmark:
+    renderer:
+      unsafe: true

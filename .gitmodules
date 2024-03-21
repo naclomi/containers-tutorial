@@ -1,0 +1,3 @@
+[submodule "themes/tutelage"]
+	path = themes/tutelage
+	url = https://github.com/naclomi/tutelage.git
