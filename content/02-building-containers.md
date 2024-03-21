@@ -9,17 +9,27 @@ Running docker containers in itself is a useful skill and you can do a lot with 
 
 Images are defined through a **Dockerfile**, a little script that instructs Docker which files to copy into the container and what the entrypoint command is to be executed once the container is eventually run. Once we write our Dockerfile, we'll issue a terminal command that reads it in and actually builds the container image. Once *that's* done, we'll be able to run the container like we did in the previous section.
 
-To get started, create a folder somewhere on your computer called `hello-world`. We'll be storing source code for our container image there. Next, open it in VSCode through the Explorer sidebar tab's "Open Folder" button:
+To get started, create a project folder for our work called `hello-world` with the following command:
 
-![open_folder](../img/open_folder.png)
+```bash
+mkdir hello-world
+```
 
-If you already had a folder or project open, you may need to close it by navigating to `File menu -> Close Folder`.
+We'll be storing source code for our container image there. Next, move into it with this command:
 
-VSCode may ask if you trust the authors of the files in this folder. Since we created it, we certainly do! Just click 'Yes'. Don't worry about it if this dialog gets skipped entirely, though.
+```bash
+cd hello-world
+```
 
-![trust](../img/trust.png)
+From here, create a new file called `Dockerfile` and open it for editing in VSCode. You can do that with the following command:
 
-Once you've opened the `hello-world` folder, create a new file (`File menu -> New File` or `Ctrl+N`) and fill it with the following contents:
+```bash 
+code dockerfile
+```
+
+(In general, you can open existing files or create new ones with the commands of the form `code [filename]`)
+
+Fill the `dockerfile` with the following contents:
 
 ```dockerfile
 # My first Dockerfile
@@ -170,7 +180,13 @@ Gosh! Let's call attention to the place where our two `echo` messages showed up.
 
 This is a really important concept:
 
+{{% aside %}}
+🙀🙀🙀
+
 **RUN commands happen at "build time", while the ENTRYPOINT command happens at "run time"**
+
+🙀🙀🙀
+{{% /aside %}}
 
 In practice, this means the `RUN` commands only happen once when you build the container image, and then the `ENTRYPOINT` will happen every time any user out there in the wide world runs the image. This division of build time and run time is useful because it allows us to issue terminal commands that install software once at build time, and then never have to worry about them again.
 
@@ -184,10 +200,18 @@ The Dockerfile is the instruction manual telling you how to assemble the tank. A
 
 Let's start work on our textbook-writer image. Create a new folder on your computer somewhere other than within `hello-world`. Call the new folder `my-textbook`. Open the folder in VS Code, create a new empty file, and save it in the directory as `Dockerfile`. 
 
-Then, download the source code and data for the textbook writer here and unzip it to the same location as the Dockerfile:
+Then, download the source code and data for the textbook writer here and unzip it to the same location as the Dockerfile using these commands:
 
-[https://drive.google.com/file/d/1tXHQtgXaId9oizIN3aw1ACgHxqLurXkA/view?usp=sharing](https://drive.google.com/file/d/1tXHQtgXaId9oizIN3aw1ACgHxqLurXkA/view?usp=sharing
-)
+```bash
+wget -P src https://raw.githubusercontent.com/naclomi/containers-tutorial/main/markov-example/src/main.py
+wget -P data https://raw.githubusercontent.com/naclomi/containers-tutorial/main/markov-example/data/mechanics-of-materials.txt
+```
+
+Then, make an empty dockerfile with the command:
+
+```bash
+touch dockerfile
+```
 
 At this point, your project directory should have the following structure:
 
@@ -247,7 +271,9 @@ What's going on here?
 
 A quick google for "markovify" turns up this:
 
-[https://pypi.org/project/markovify/](https://pypi.org/project/markovify/)
+{{% aside %}}
+🔗 [https://pypi.org/project/markovify/](https://pypi.org/project/markovify/)
+{{% /aside %}}
 
 It looks like "markovify" is a Python library used for generating gibberish text. Our script **depends** on this library! Thank you for your beautiful work library authors!
 
@@ -322,9 +348,8 @@ Muuuuuch better. Our command line flag asking for only one sentence now successf
 
 We can actually specify default flags to be passed to the entrypoint, that disappear if the user specifies their own when they run the container. To do that, we use the **CMD** command:
 
-```dockerfile
-CMD ["flag1", "flag2", ...]
-```
+
+`CMD ["flag1", "flag2", ...]`
 
 At run-time, the `CMD` command will glue whatever flags you specify in its list to the end of the list of flags used by `ENTRYPOINT` unless the user specifies their own command-line flags, in which case it will do nothing. Similar to `ENTRYPOINT`, only the last `CMD` in your Dockerfile will actually take effect. And similar to user-supplied command line flags, `ENTRYPOINT` has to be in exec form for `CMD` to do anything.
 
@@ -357,5 +382,5 @@ If you try generating a PDF as you did in the "Running containers" portion of th
 
 To install them, you'll need to add a command to the right place in your Dockerfile that uses the Linux package manager `apt-get` . See if you can get it working.
 
-*Hint: the first thing you'll have to do is run the command `apt-get update`* 
+*🤫 Hint: the first thing you'll have to do is run the command `apt-get update`* 
 

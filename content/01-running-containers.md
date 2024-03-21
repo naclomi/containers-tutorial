@@ -64,6 +64,10 @@ You should see some numbers get printed to the terminal, like this:
 
 ![](../img/docker-version.png)
 
+Finally, reboot your VM by opening its dashboard in the Azure web portal and hitting the `Restart` button:
+
+![](../img/vm-reboot.png)
+
 ## Pulling our first image
 
 Now that everything has been set up, let's run a container! Run the following command:
