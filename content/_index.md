@@ -7,7 +7,7 @@ title: "Containerization Tutorial"
 
 ## What are we doing here?
 
-#### Tutorial Goals
+### Tutorial Goals
 
 In this tutorial series we are going to learn how to:
 
@@ -15,7 +15,7 @@ In this tutorial series we are going to learn how to:
 - Build our own Docker containers from scratch
 - Deploy our Docker containers to Azure
 
-#### Requirements and expectations
+### Requirements and expectations
 
 This tutorial series makes extensive use of VS Code, Docker, VS Code's Azure and Docker extensions, and the Azure CLI. It assumes you have these installed on your system before proceeding. On Windows, it also assumes you have WSL2 installed, which is a requirement for Docker. For instructions on how to install each, please see:
 
@@ -35,7 +35,7 @@ Part 3 walks through cloud deployment, for which you will need Microsoft Azure l
 
 ## Background
 
-#### Containers
+### Containers
 
 **Containers** are a technology that let you easily reproduce the environment your code runs in on other computers and servers. This environment includes all the software, libraries, and hand-tweaked configuration you need to run your experiments and reproduce their results.
 
@@ -43,7 +43,7 @@ You could think of containers as very **light-weight** virtual machines: they ru
 
 That said, they are more often used to **run code** than as an **interactive desktop computer** -- you won't usually open a terminal within a container or run graphical applications from them. Rather, once you develop your code, you will **package it** into a **container image** which can be **run reproducibly**.
 
-#### Docker
+### Docker
 
 **Docker** containers are one implementation of the container concept, which we will be working with for the remainder of this tutorial. Docker container images can be **published** for free on **Docker Hub**, which hosts Docker images the same way Github hosts code and Google Docs hosts word documents.
 
