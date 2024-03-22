@@ -52,7 +52,7 @@ At this point, others can run your image on their computers using the same `dock
 docker run --rm [YOUR-DOCKERHUB-USERNAME]/my-textbook
 ```
 
-Have a friend try it out on their computer :) .
+Have a friend try it out on their computer 🙂 .
 
 ## Containers in the cloud
 
@@ -62,69 +62,37 @@ A classic example might be to develop an ML model training script on your comput
 
 ## Setting up the Azure CLI
 
-There are many ways to run a Docker container in Microsoft Azure. The most general-purpose of which is a service they provide called **Azure Container Instances**. We'll use the **Azure CLI** to interact with it. The Azure CLI runs on the terminal and behaves similarly to the Docker CLI, but its commands all start with `az` rather than `docker`.
-
-Get started by downloading and installing the Azure CLI on your computer here:
-
-[https://docs.microsoft.com/en-us/cli/azure/install-azure-cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-
-Once you're finished with that, open a VS Code terminal and logging in to Azure with the command:
+There are many ways to run a Docker container in Microsoft Azure. The most general-purpose of which is a service they provide called **Azure Container Instances**. We'll use the **Azure CLI** to interact with it. Make sure your terminal is logged in to Azure with the command by runnign this command and then following its instructions:
 
 ```bash
 az login
 ```
 
-This command will open a web browser to an Azure login page. Enter your username and password, and once you've successfully logged in go back to the terminal. You should see it list the Azure **subscriptions** you have access to (that is, the billing accounts paying for your cloud resources). In our case, the subscription we want to use is the one for this class, which will have "MSE544" in the title, though in the screenshot below the only one visible is labeled 'Personal'.
+To make our lives a little easier down the road, let's tell the `az` command what Azure subscriptions and resource groups we want it to work with by default. 
 
-![rg](../img/subscriptions.png)
+We'll start by setting the CLI to use this subscription by default, so we don't have to specify it for every `az` command we run. Look up the subscriptions available to you with this command:
 
-We'll start by setting the CLI to use this subscription by default, so we don't have to specify it for every `az` command we run. Run this command in your terminal, replacing `[SUBSCRIPTION-NAME]` with the complete name of this class's subcription (the one that includes the text `MSE544`):
+```bash
+az account list --output table
+```
+
+Find the one that has your class's name in it:
+
+![](../img/subscriptions.png)
+
+Run this command in your terminal, replacing `[SUBSCRIPTION-NAME]` with the complete name of this class's subcription (the one that includes the text `MSE544`):
 
 ```bash
 az account set --subscription "[SUBSCRIPTION-NAME]"
 ```
 
-Next, we'll tell the CLI what **resource group** to work within. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you'll create or use. You can find this information by opening the Azure sidebar in VSCode. Start by clicking the Azure icon (1) and then signing in again (2) .
-
-![logging in](../img/az_gui_login.png)
-
-Next, we'll ask the Azure toolbar to show us the resource groups we have access to. Click the tiny `Group By` icon (labelled (1) in the figure below) and select `Group by Resource Group` (2).
-
-![logging in](../img/az_gui_groupby.png)
-
-We also need to change some Azure settings for later. Open VS Code's settings page by (1) opening the `File` menu, (2) opening `Preferences` and (3) clicking `Settings`:
-
-![settings](../img/vscode_open_settings.png)
-
-Paste `azureResourceGroups.showHiddenTypes` into the search box at the top of the settings page (1), and then check the box on the setting that appears in the subsequent search results (2):
-
-![settings](../img/vscode_az_rg_show.png)
-
-Ok! Finally! In the Azure sidebar on the left, expand the subcription with `MSE544` in the title (1) right-click the resource group created for you (2). Its name will take the form `rg-amlclass-[UW STUDENT ID]`. Select `View Properties` (3):
-
-![rg](../img/rg.png)
-
-Once you click `View Properties`, a bunch of configuration information should open up in the code editing area. It'll look something like this:
-
-```json
-{
-    "id": "/subscriptions/ab12345c-def6-7890-gh12-345678i90jkl/resourceGroups/rg-amlclass-naomila",
-    "name": "rg-amlclass-naomila",
-    "type": "Microsoft.Resources/resourceGroups",
-    "properties": {
-        "provisioningState": "Succeeded"
-    },
-    "location": "westus"
-}
-```
-
-The id of the resource group takes the following form:
+Next, we'll tell the CLI what **resource group** to work within. The resource group is specific to you, and is like a cloud "folder" containing all of the Azure services you'll create or use. Find its name by running the following command:
 
 ```bash
-/subscriptions/[SUBSCRIPTION ID]/resourceGroups/[GROUP NAME]
+az group list --output table
 ```
 
-Note down both the group name and subscription id from the "id" section of the configuration info in your VS code window (don't use the values in the above example). Then, set the resource group with the command:
+If you have more than one in the output, choose the one with your UW NetID in the name. Copy the full resource group name and set it as the default with this command:
 
 ```bash
 az configure --defaults group=[GROUP NAME]
@@ -135,10 +103,10 @@ replacing [GROUP NAME] with the value you just noted down.
 To confirm everything is working, try running the command: 
 
 ```bash
-az resource list
+az resource list --output table
 ```
 
-If your CLI is configured properly, this command will return all of the Azure services and objects currently in your resource group (which you can also inspect through that graphical sidebar we've been messing with).
+If your CLI is configured properly, this command will return all of the Azure services and objects currently in your resource group (which you can also inspect through the Azure web portal -- it's the same stuff, just a different method of interacting with it).
 
 
 ## Running containers in Azure
@@ -146,7 +114,13 @@ If your CLI is configured properly, this command will return all of the Azure se
 To run a container as an Azure Container Instance we'll use the `az container create` command, which is like a cloud version of `docker pull` and `docker run` combined into one command. It'll take the following form:
 
 ```bash
-az container create --name [INSTANCE NAME] --image [DOCKER IMAGE NAME] --cpu [CORES] --memory [GB RAM] --restart-policy Never --no-wait
+az container create \
+  --name [INSTANCE NAME] \
+  --image [DOCKER IMAGE NAME]
+  --cpu [CORES] \
+  --memory [GB RAM] \
+  --restart-policy Never \
+  --no-wait
 ```
 
 There's a lot going on here. Let's step through it:
@@ -160,11 +134,15 @@ There's a lot going on here. Let's step through it:
 
 We'll master all of those options, the more we use Azure. For now, just copy and paste the command with the appropriate values replacing the blanks denoted by `[]`s. It might help to copy it into a text editor first, fill in the `[]`-blanks there, and then copy _that_ to your termainal.
 
-To confirm that your container was created, click the little refresh icon at the top of the Azure sidebar (1) and expand your resource group. You should see the name of your container show up there (2) :
+To confirm that your container was created, run the following command which _should_ show your new container in the table:
 
-![new_container](../img/new_container.png)
+```bash
+az container list --output table
+```
 
-Wait a few minutes, and then try running the command:
+![new_container](../img/az-container-list.png)
+
+Right now the container's status is `Pending`, but after a few minutes it should change to `Succeeded`. Once it does, try running the command:
 
 ```bash
 az container logs --name my-cloud-textbook
@@ -186,23 +164,13 @@ This outputs a lot of detailed information about the container, including when i
 
 ![cloud_progress](../img/cloud_progress.png)
 
-
-If you _don't_ see this information when running the above command, and you're on a recent Apple laptop, you may need to rebuild your docker container with a few extra options enabled. Run these two commands, with `[YOUR DOCKERHUB USERNAME]` replaced appropriately:
-
-```bash
-docker buildx create --name mybuilder --driver docker-container --bootstrap --use
-docker buildx build -t [YOUR DOCKERHUB USERNAME]/my-textbook:latest -f Dockerfile --push --platform=linux/arm64,linux/amd64 .
-```
-
-At this point, you can restart the process from the `az container create` step and things should be working.
-
-Regardless of the above, once you're done, delete the container with the command:
+Once you're done, delete the container with the command:
 
 ```bash
 az container delete --name my-cloud-textbook
 ```
 
-**Make sure to delete the container once you're done here**, to make sure you don't leave resources in the cloud that may use up funds.
+**Make sure to delete the container once you're done here**, to make sure you don't leave resources in the cloud that may use up funds. To be sure it's deleted, try running the `az container list --output table` command again and confirming that the table is empty.
 
 ## Using cloud file stores for Azure container input/output
 
@@ -219,6 +187,9 @@ Subscription (eg, billing)
 ```
 
 Yikes, right? Anyway, we need to create a new storage account, and then within that create a file share. Then, when we start our Docker container, we can point it towards that file share and it put stuff in it.
+
+
+//// TODO: left off here, replace this with portal instructions ////
 
 Start by opening the Azure sidebar in VS Code, clicking the + button at the top (1), and typing "Storage Account" into the box that pops up to create a new storage account (2):
 
