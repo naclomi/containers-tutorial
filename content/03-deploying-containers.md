@@ -164,13 +164,13 @@ This outputs a lot of detailed information about the container, including when i
 
 ![cloud_progress](../img/cloud_progress.png)
 
-Once you're done, delete the container with the command:
+In general you want to delete cloud resources like this as soon as you're done with them, to ensure they don't use up funds. That said, if this container is going to be reviewed as a part of your class grade **you should wait to delete it until your TA has looked it over**. Once you _are_ ready to delete it, you can do so with this command:
 
 ```bash
 az container delete --name my-cloud-textbook
 ```
 
-**Make sure to delete the container once you're done here**, to make sure you don't leave resources in the cloud that may use up funds. To be sure it's deleted, try running the `az container list --output table` command again and confirming that the table is empty.
+**Do make sure to remember to go back and delete the container once your TA has looked at it**, to make sure you don't leave resources in the cloud that may use up funds. To be sure it's deleted, try running the `az container list --output table` command again and confirming that the table is empty.
 
 ## Using cloud file stores for Azure container input/output
 
