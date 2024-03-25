@@ -15,18 +15,15 @@ In this tutorial series we are going to learn how to:
 - Build our own Docker containers from scratch
 - Deploy our Docker containers to Azure
 
-### Requirements and expectations
+### Prerequisites
 
-TODO: talk about workstation vm, how doing this on your own computer is easy but discussed in an appendix b/c of different OSes
+This tutorial is written assuming you are running commands in a Linux environment, which it assumes that you created and configured according to the instructions in [this guide](https://cloudbank-project.github.io/az-serverless-tutorial/workstation/). If you don't have access to an Azure cloud account, most of this tutorial can be completed on your own personal computer. See the [appendix](0a-local-installs) for notes on that.
 
-
-VSCode, remote VM
+It also assumes you have [Microsoft Visual Studio Code](https://code.visualstudio.com/) installed on your computer.
 
 The tutorial content makes light use of shell scripting and Python. It does not expect you to write any such scripts on your own, but it will help to have a passing familiarity with them.
 
-Create a free Docker Hub account, which you can register for [here](https://hub.docker.com/signup)
-
-Part 3 walks through cloud deployment, for which you will need Microsoft Azure login credentials.
+Part 3 of the tutorial involves deployment of containers to the web, for which you'll need a free Docker hub account. You can register for one [here](https://hub.docker.com/signup).
 
 
 ## Background
@@ -45,16 +42,6 @@ That said, they are more often used to **run code** than as an **interactive des
 
 The most common way of interacting with Docker on your computer is with the Docker Command Line Interface (**Docker CLI**), but there is also a wonderful **VS Code Docker plugin** that lets us do many of the same operations through VS Code's GUI. We will be using that as well.
 
-## Installing Docker
-
-Installing Docker can be an unfortunately involved process depending on what operating system you are using. For a general-purpose set-up guide, see here:
-
-[https://carpentries-incubator.github.io/docker-introduction/setup.html](https://carpentries-incubator.github.io/docker-introduction/setup.html)
-
-After you have Docker installed, sign up for an account on Docker Hub:
-
-[https://hub.docker.com/](https://hub.docker.com/)
-
 ## Tutorial Modules
 
 ### [Part 1: Running Containers](01-running-containers)
@@ -63,8 +50,7 @@ After you have Docker installed, sign up for an account on Docker Hub:
 
 ### [Part 3: Deploying Containers](03-deploying-containers)
 
-TODO:
-### [Appendix: Installing Docker on your personal computer](0a-local-installs)
+### [Appendix: Using Docker on your personal computer](0a-local-installs)
 
 ## Notes and References
 
