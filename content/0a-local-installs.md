@@ -72,5 +72,5 @@ az container create `
    --azure-file-volume-account-name [STORAGE ACCOUNT NAME] `
    --azure-file-volume-account-key [STORAGE ACCOUNT KEY] `
    --azure-file-volume-share-name [FILE SHARE NAME] `
-   --azure-file-volume-mount-path /output 
+   --azure-file-volume-mount-path output 
 ```
