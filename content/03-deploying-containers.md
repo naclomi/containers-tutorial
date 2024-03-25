@@ -276,7 +276,7 @@ az container create \
    --azure-file-volume-account-name [STORAGE ACCOUNT NAME] \
    --azure-file-volume-account-key [STORAGE ACCOUNT KEY] \
    --azure-file-volume-share-name [FILE SHARE NAME] \
-   --azure-file-volume-mount-path /output 
+   --azure-file-volume-mount-path output 
 ```
 
 Oof, it's complicated, but it's powerful. Good job command line warrior. Run it, and then wait a minute or two for Azure to complete its work. As before, you can check the status of the container with the command:
@@ -301,11 +301,10 @@ Now that the file share is created, you can rerun the container with `az contain
 
 ### Cleaning up
 
-Remember to delete all of the resources you used from Azure once you're done.
+Wait until your course staff have recorded that you've successfully run the tutorial, and then delete all of the resources you used from Azure once you're done.
 
 Use the `az container delete --name [NAME]` command to delete any containers shown by the `az container list --output table` for the containers.
 
 Delete your storage account by going to `Overview` on the storage account dashboard (1) and clicking `Delete` (2). Then, follow the confirmation instructions to finish deleting it:
 
 ![](../img/az-file-delete.png)
-

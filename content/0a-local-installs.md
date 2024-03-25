@@ -45,6 +45,8 @@ docker buildx build -t [YOUR DOCKERHUB USERNAME]/[YOUR IMAGE NAME]:latest -f Doc
 
 These commands builds and publishes the image for the Intel processors that the Azure cloud uses (in addition to the image built for Apple processors, that the normal `docker build` command produces). At this point, you should restart the process from the `az container create` step and things should be working.
 
+If `az container create` _still fails_, giving you an error with the text `InaccessibleImage`, you can just use the reference image built for this tutorial titled `naclomi/textbook-writer-cloudref` (instead of the image you created). This error is related to the added complexity of building Docker containers compatible with Apple computers, and can be circumvented with some further tricks that are unfortunately outside the scope of what we have time for here.
+
 # Windows concerns 
 
 ## Figuring out what shell you're in
