@@ -176,6 +176,8 @@ az container delete --name my-cloud-textbook
 
 To get files in and out of a container running in Azure, we can mount Azure file stores similarly to how we mount folders when we use `docker run` locally. Let's get some practice with this by using the `naclomi/textbook-writer` image to generate a PDF in the cloud.
 
+### Creating a file store
+
 Let's start by creating a file store for the container output. It's a little convoluted, but Azure file stores exist within an administration hierarchy that looks like this:
 
 ```bash
@@ -188,57 +190,70 @@ Subscription (eg, billing)
 
 Yikes, right? Anyway, we need to create a new storage account, and then within that create a file share. Then, when we start our Docker container, we can point it towards that file share and it put stuff in it.
 
+Start by going to the Azure portal and searching `storage` at the top. Select the `Storage Accounts` option:
 
-//// TODO: left off here, replace this with portal instructions ////
+![](../img/az-storage-1.png)
 
-Start by opening the Azure sidebar in VS Code, clicking the + button at the top (1), and typing "Storage Account" into the box that pops up to create a new storage account (2):
+From the storage accounts dashboard, click `+ Create` to make a new one:
 
-![storage_1](../img/storage_1.png)
+![](../img/az-storage-2.png)
 
-VS Code will then ask you for a few details:
+From here, we'll be able to choose some options for the new account:
 
-- What subscription to create the account within. Select the subscription for this class.
-- A unique name for the account This name can only contain letters and numbers, and has to be unique across all of Azure (how dramatic!). You can choose whatever you want, but to make it easier to find a name that isn't taken it helps to prefix it with your own username.
-- A location to put the storage in. It doesn't ultimately matter, but for now select `Central US`.
+![](../img/az-storage-3.png)
 
-VS Code _may_ complain that you don't have permission to create a resource group. This is fine, just click 'Select existing' and then choose your class-created resource group from the list that pops up (the one that has your username in it):
+Make the following selections:
 
-![storage_1](../img/storage_complaint.png)
+- **Subscription**: Make sure to select the proper subscription for this class (that includes the term `MSE544`)
+- **Storage account name**: This name has to be globally unique on Azure's cloud, so choose something that starts with your UW NetID. Unfortunately, it can only include letters and numbers (no spaces, dashes or other symbols).
+- **Redundancy**: This option controls how your data is backed up. Select **`Locally redundant storage (LRS)`**, which keeps backups of your data in the same physical datacenter as the main account. Geo-rendundant storage is more expensive and keeps backups in different physical regions of the world, which is generally good practice but overdoing it for this exercise.
 
-After all of this this, VS Code will spin a bit waiting for Azure to finish creating your storage account. Once it's done, you'll see a little green checkbox in the status window at the bottom of your screen:
+When you're done, click the blue `Review + create` button at the bottom, and then the blue `create` button at the confirmation screen to finish the process.
 
-![storage_1](../img/storage_success.png)
+After a minute or two, the storage account will become available and you'll see a blue `Go to resource` button. Click that:
 
-In the Azure sidebar, refresh the list of resources (1), expand the new storage account you just created (2), right-click `File Shares`, and select `Create File Share...` (3):
+![](../img/az-storage-4.png)
 
-![new_share](../img/new_share.png)
+From this dashboard, we can see and manage the file shares that will actually contain our data. Let's create a file share to hold the PDFs our docker containers create. 
 
-VS Code will then ask for:
+Choose `File shares` from the menu on the left (1), and then click the `+ File share` button (2) to create a new one within our storage account:
+![](../img/az-storage-new-fileshare.png)
 
-- A name for the file share. This one doesn't have to be unique across Azure, and can contain dashes. Name it something simple and informative, like `dockeroutput` .
-- The max size of the share, in GB. Specify the minimum, `1`. We won't be needing much for this example.
+Give the file share a name like `container-output`. This doesn't have to be globally unique across the whole cloud, so we don't have to put our NetID in the name or anything like that. When you're done, click the `Next: Backup >` button:
 
-If all goes well, you should see the share appear in the storage explorer:
+![](../img/az-storage-new-fileshare-2.png)
 
-![fileshare_done](../img/fileshare_done.png)
+Uncheck the `Enable backup` option, which isn't generally a bad thing but unneeded for this exercise (you can always just rerun your container if for some reason the output gets lost):
+![](../img/az-storage-new-fileshare-3.png)
 
+Finally, click the `Review + create` button at the bottom, and then the blue `Create` button to finish creating the file share.
 Now we're ready to run a container that connects to it.
 
-We connect the file share when we run the `az container create` command. We'll need to add a few extra flags:
+We'll be brought to a summary page showing the file share. This is how we'll download our container output later, but for now, return to the storage account dashboard by clicking the right-most link in the path at the top of the screen (circled in red here):
+
+![](../img/az-storage-fileshare-back.png)
+
+Now, let's copy some connection details that we'll need when we start our container. Go to the `Access keys` page from the menu at the left (1), and copy the storage account name (2). Paste it in a text file to use later. Then, click `Show` next to one of the storage keys (3) and copy that (4). Paste it in that text file too:
+
+![](../img/az-storage-keys.png)
+
+Think of the key as like an auto-generated password for the storage account. It's important to keep others from seeing your key, to keep your data safe! If a key ever _does_ get stolen, you can easily disable it and create a new one by clicking that `Rotate key` button, which is good practice to do regularly anyway.
+
+### Mounting file stores in containers
+
+To connect the file share to our cloud containers, we'll add a few extra options to our `az container create` command:
 
 - `--azure-file-volume-account-name [NAME]` 
-  The name of the storage account we created
+  The name of the storage account that we copied earlier
 
 - `--azure-file-volume-account-key [KEY]`
-  The key of the storage account. Think of this as like an auto-generated password. You can get the key by right-clicking the storage account in the sidebar and selecting `Copy Primary Key`, which will put it in your clipboard. You can then paste it into a text editor.
-
-  ![copy_key](../img/copy_key.png)
+  The key to the storage account that we copied earlier.
 
 - `--azure-file-volume-share-name [NAME]` 
-  The name of the file share *within* the storage account we created
+  The name of the file share *within* the storage account we created.
 
 - `--azure-file-volume-mount-path [CONTAINER PATH]`
-  The path inside of the container to mount the share to. This is like the second half of the `-v [LOCAL PATH]:[CONTAINER PATH]` flag that you pass to `docker run` when mounting a folder on your computer.
+  The path inside of the container to mount the share to. This is like the second half of the `-v [LOCAL PATH]:[CONTAINER PATH]` flag that you pass to `docker run` when running containers on your workstation or personal computer.
 
 In addition to the above flags that mount a file share to our container, we also need to tell the container to generate a PDF. Unlike the Docker CLI, Azure doesn't let us add extra flags when we run the container, it only lets us replace the entrypoint entirely:
 
@@ -249,7 +264,7 @@ We'll mount the file share to the location `/output` in our container, and then 
 
 Copy and execute the command line below, replacing the `[ ]`-indicated blanks with their appropriate values. It's probably a good idea to first copy this content into a blank text file, replace the `[ ]`-blanks, and then copy _that_ into your terminal.
 
-If you're on MacOS, Linux, or WSL, the command looks like:
+The command will look like:
 
 ```bash
 az container create \
@@ -264,31 +279,19 @@ az container create \
    --azure-file-volume-mount-path /output 
 ```
 
-If you're on Windows PowerShell (your command line starts with the letters "PS"), the command looks the same as above but with backticks at the end of the line instead of slashes:
-
-
-```bash
-az container create `
-   --name my-cloud-textbook `
-   --image naclomi/textbook-writer `
-   --cpu 0.5 --memory 0.5 `
-   --restart-policy Never --no-wait `
-   --command-line "python3 src/main.py --pdf /output/text.pdf" `
-   --azure-file-volume-account-name [STORAGE ACCOUNT NAME] `
-   --azure-file-volume-account-key [STORAGE ACCOUNT KEY] `
-   --azure-file-volume-share-name [FILE SHARE NAME] `
-   --azure-file-volume-mount-path /output 
-```
-
 Oof, it's complicated, but it's powerful. Good job command line warrior. Run it, and then wait a minute or two for Azure to complete its work. As before, you can check the status of the container with the command:
 
-`az container show --name my-cloud-textbook`
+`az container list --output table`
 
-Once it's all done, click the refresh icon in the Azure bar (1), and expand the file share by clicking the arrow next to it (2). You should see our pdf sitting there! Right click it, and select `Download` (3):
+Once the status reports `Succeeded`, go to your storage account's web dashboard and select `File shares` (1), then open your file share (2):
 
-![download](../img/download.png)
+![](../img/az-file-dl-1.png)
 
-VS Code will ask you where to save the file to. Select your project folder from the list (or browse for whatever other location you like), then open it up in your computer's file explorer.
+From here, select `Browse` on the left (1) to view the files inside the store. We should see the PDF our container created! Click it (2). This will open a file properties box, from which we can hit the `Download` button (3):
+
+![](../img/az-file-dl-2.png)
+
+From here, we can open the file up using your computer's file explorer:
 
 ![downloaded_pdf](../img/downloaded_pdf.png)
 
@@ -296,4 +299,13 @@ Congratulations -- this was a lot of steps for some pretty advanced computing, a
 
 Now that the file share is created, you can rerun the container with `az container start` or create new ones that connect to the share with `az container create` as much as you like. The steps preceding the `az container create` command only have to be done once.
 
-Remember to delete all of the resources you used from Azure once you're done, using the `az container delete` command for the containers and by right-clicking the storage account and selecting `Delete Storage Account...`.
+### Cleaning up
+
+Remember to delete all of the resources you used from Azure once you're done.
+
+Use the `az container delete --name [NAME]` command to delete any containers shown by the `az container list --output table` for the containers.
+
+Delete your storage account by going to `Overview` on the storage account dashboard (1) and clicking `Delete` (2). Then, follow the confirmation instructions to finish deleting it:
+
+![](../img/az-file-delete.png)
+
