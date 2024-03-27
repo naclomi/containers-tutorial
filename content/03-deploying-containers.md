@@ -1,6 +1,8 @@
 ---
 draft: false
 title: "Part 3: Deploying containers"
+aliases:
+    /03-deploying-containers.html
 ---
 
 ## Publishing images on Docker Hub

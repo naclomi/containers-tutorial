@@ -1,6 +1,8 @@
 ---
 draft: false
 title: "Part 2: Building containers"
+aliases:
+    /02-building-containers.html
 ---
 
 Running docker containers in itself is a useful skill and you can do a lot with the pre-existing containers published on Docker Hub, but to fully customize the contents of a container you'll need to build your own images. In this section we'll walk through how.

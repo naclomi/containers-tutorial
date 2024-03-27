@@ -1,6 +1,8 @@
 ---
 draft: false
 title: "Appendix: Using Docker on your personal computer"
+aliases:
+    /0a-local-installs.html
 ---
 
 The containerization examples in this tutorial are written assuming they are being run in a Linux environment, but Docker can be installed on your personal computer and be invoked with almost exactly the same commands. This appendix details the few differences you should be aware of.

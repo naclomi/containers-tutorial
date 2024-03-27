@@ -1,6 +1,8 @@
 ---
 draft: false
 title: "Part 1: Running containers"
+aliases:
+    /01-running-containers.html
 ---
 ## Getting started
 
