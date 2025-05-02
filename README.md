@@ -1,1 +1,1 @@
-"Containerization with docker" tutorial deployed at [https://naclomi.github.io/containers-tutorial/](https://naclomi.github.io/containers-tutorial/)
+# Tutorial moved to [https://github.com/cloudbank-project/containers-tutorial/](https://github.com/cloudbank-project/containers-tutorial/)
